@@ -22,7 +22,7 @@ const TIMESTEP_SQ = TIMESTEP * TIMESTEP;
 
 const diff = new THREE.Vector3();
 
-import TrackballControls from 'react-three-renderer/dist/ref/trackball';
+import TrackballControls from '../../ref/trackball';
 
 function satisfyConstrains(p1, p2, distance) {
   diff.subVectors(p2.position, p1.position);

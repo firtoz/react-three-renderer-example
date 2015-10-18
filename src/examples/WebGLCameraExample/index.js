@@ -10,7 +10,7 @@ import Info from './Info';
 
 import PointCloud from './PointCloud';
 
-import TrackballControls from 'react-three-renderer/dist/ref/trackball';
+import TrackballControls from '../../ref/trackball';
 
 const perspectiveCameraName = 'perspectiveCamera';
 const orthographicCameraName = 'orthographicCamera';
