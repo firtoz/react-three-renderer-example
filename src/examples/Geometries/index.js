@@ -1,10 +1,12 @@
 import React from 'react';
 
 import THREE from 'three.js';
+import Stats from 'stats.js';
 
 import React3 from 'react-three-renderer';
 
 import ExampleBase from '../ExampleBase';
+
 
 class Geometries extends ExampleBase {
   constructor(props, context) {
@@ -51,12 +53,24 @@ class Geometries extends ExampleBase {
     this._onAnimateInternal();
   };
 
+  componentDidMount() {
+    this.stats = new Stats();
+
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.top = '0px';
+
+    this.refs.container.appendChild(this.stats.domElement);
+    return super.componentDidMount();
+  }
+
   _onAnimateInternal() {
     const timer = Date.now() * 0.0001;
 
     this.setState({
       timer,
     });
+
+    this.stats.update();
   }
 
   render() {
@@ -72,7 +86,7 @@ class Geometries extends ExampleBase {
       0
     );
 
-    return (<div>
+    return (<div ref="container">
       <React3
         width={width}
         height={height}

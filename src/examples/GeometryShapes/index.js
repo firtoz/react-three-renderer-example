@@ -32,8 +32,6 @@ class GeometryShapes extends ExampleBase {
   }
 
   componentDidMount() {
-    super.componentDidMount();
-
     this.stats = new Stats();
 
     this.stats.domElement.style.position = 'absolute';
@@ -47,8 +45,6 @@ class GeometryShapes extends ExampleBase {
   }
 
   componentWillUnmount() {
-    super.componentWillUnmount();
-
     document.removeEventListener('mousedown', this._onDocumentMouseDown, false);
     document.removeEventListener('touchstart', this._onDocumentTouchStart, false);
     document.removeEventListener('touchmove', this._onDocumentTouchMove, false);

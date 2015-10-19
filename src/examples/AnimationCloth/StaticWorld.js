@@ -86,7 +86,6 @@ class StaticWorld extends React.Component {
         shadowCameraTop={shadowCameraSize}
         shadowCameraBottom={-shadowCameraSize}
         shadowCameraFar={1000}
-        shadowDarkness={0.5}
       />
       <mesh
         castShadow

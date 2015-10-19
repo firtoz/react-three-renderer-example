@@ -24,6 +24,8 @@ const diff = new THREE.Vector3();
 
 import TrackballControls from '../../ref/trackball';
 
+import Stats from 'stats.js';
+
 function satisfyConstrains(p1, p2, distance) {
   diff.subVectors(p2.position, p1.position);
   const currentDist = diff.length();
@@ -96,7 +98,6 @@ class AnimationCloth extends ExampleBase {
   }
 
   componentDidMount() {
-    super.componentDidMount();
     const controls = new TrackballControls(this.refs.mainCamera, ReactDOM.findDOMNode(this.refs.react3));
     controls.rotateSpeed = 1.0;
     controls.zoomSpeed = 1.2;
@@ -115,6 +116,13 @@ class AnimationCloth extends ExampleBase {
     });
 
     this.controls = controls;
+
+    this.stats = new Stats();
+
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.top = '0px';
+
+    this.refs.container.appendChild(this.stats.domElement);
   }
 
   _toggleRotate = () => {
@@ -284,6 +292,7 @@ class AnimationCloth extends ExampleBase {
     }
 
     this.setState(newState);
+    this.stats.update();
   };
 
   _clothRef = (ref) => {
@@ -294,10 +303,13 @@ class AnimationCloth extends ExampleBase {
     const {
       width,
       height,
+      } = this.props;
+
+    const {
       minTimePerFrame,
       } = this.state;
 
-    return (<div>
+    return (<div ref="container">
       <Info
         toggleRotate={this._toggleRotate}
         toggleWind={this._toggleWind}
@@ -322,6 +334,7 @@ class AnimationCloth extends ExampleBase {
         gammaInput
         gammaOutput
         shadowMapEnabled
+        shadowMapDebug
         mainCamera="mainCamera"
         onAnimate={this._onAnimate}
       >
