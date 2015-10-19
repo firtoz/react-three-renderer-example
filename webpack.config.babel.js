@@ -21,6 +21,7 @@ export default {
         loader: 'babel-loader',
         query: {
           optional: ['runtime'],
+          cacheDirectory: true,
           stage: 0,
         },
       },
@@ -44,7 +45,7 @@ export default {
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: false,
       },
       mangle: true,
     }),

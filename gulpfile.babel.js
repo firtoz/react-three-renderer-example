@@ -4,13 +4,16 @@ import WebpackDevServer from 'webpack-dev-server';
 import gutil from 'gulp-util';
 import webpackConfig from './webpack.config.babel';
 import path from 'path';
-import babel from 'gulp-babel';
+
+const cache = {};
 
 gulp.task('webpack-dev-server', (callback) => {
   void callback;
 
   const host = '0.0.0.0';
   const port = 8080;
+
+  webpackConfig.cache = cache;
 
   webpackConfig.entry.app = [
     `webpack-dev-server/client?http://${host}:${port}`, // WebpackDevServer host and port
