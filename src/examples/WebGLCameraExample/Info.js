@@ -11,9 +11,11 @@ class Info extends React.Component {
   render() {
     return (<div style={{
       position: 'absolute',
+      textAlign: 'center',
       top: 0,
       width: '100%',
       padding: 5,
+      color: 'white',
       zIndex: 100,
     }}>
       <a href="http://threejs.org" style={{
