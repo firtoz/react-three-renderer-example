@@ -38,7 +38,6 @@ class WebGLCameraExample extends ExampleBase {
   }
 
   componentDidMount() {
-    super.componentDidMount();
     document.addEventListener('keydown', this._onKeyDown, false);
 
     const controls = new TrackballControls(this.refs.mainCamera, ReactDOM.findDOMNode(this.refs.react3));
@@ -64,7 +63,6 @@ class WebGLCameraExample extends ExampleBase {
   componentWillUnmount() {
     document.removeEventListener('keydown', this._onKeyDown, false);
 
-    super.componentWillUnmount();
     this.controls.dispose();
     delete this.controls;
   }
@@ -107,6 +105,9 @@ class WebGLCameraExample extends ExampleBase {
     const {
       width,
       height,
+      } = this.props;
+
+    const {
       meshPosition,
       childPosition,
       r,
@@ -135,9 +136,9 @@ class WebGLCameraExample extends ExampleBase {
       <React3
         ref="react3"
         width={width}
-              height={height}
-              antialias
-              onAnimate={this._onAnimate}
+        height={height}
+        antialias
+        onAnimate={this._onAnimate}
       >
         <viewport
           x={0}
