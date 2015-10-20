@@ -65,6 +65,8 @@ class WebGLCameraExample extends ExampleBase {
     document.removeEventListener('keydown', this._onKeyDown, false);
 
     super.componentWillUnmount();
+    this.controls.dispose();
+    delete this.controls;
   }
 
   _onKeyDown = (event) => {

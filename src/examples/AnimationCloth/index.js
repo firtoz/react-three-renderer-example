@@ -127,6 +127,7 @@ class AnimationCloth extends ExampleBase {
 
   componentWillUnmount() {
     delete this.stats;
+    this.controls.dispose();
     delete this.controls;
   }
 
