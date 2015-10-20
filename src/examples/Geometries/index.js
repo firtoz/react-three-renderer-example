@@ -60,7 +60,10 @@ class Geometries extends ExampleBase {
     this.stats.domElement.style.top = '0px';
 
     this.refs.container.appendChild(this.stats.domElement);
-    return super.componentDidMount();
+  }
+
+  componentWillUnmount() {
+    delete this.stats;
   }
 
   _onAnimateInternal() {
@@ -77,6 +80,9 @@ class Geometries extends ExampleBase {
     const {
       width,
       height,
+      } = this.props;
+
+    const {
       timer,
       } = this.state;
 

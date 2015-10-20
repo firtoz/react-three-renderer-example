@@ -125,6 +125,11 @@ class AnimationCloth extends ExampleBase {
     this.refs.container.appendChild(this.stats.domElement);
   }
 
+  componentWillUnmount() {
+    delete this.stats;
+    delete this.controls;
+  }
+
   _toggleRotate = () => {
     this.setState({rotate: !this.state.rotate});
   };
