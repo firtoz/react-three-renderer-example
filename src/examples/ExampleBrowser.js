@@ -2,11 +2,16 @@ import React from 'react';
 
 import ClothExample from './AnimationCloth/index';
 import GeometriesExample from './Geometries/index';
+import CameraExample from './WebGLCameraExample/index';
 
 const examples = [
   {
     name: 'Cloth',
     component: ClothExample,
+  },
+  {
+    name: 'Camera',
+    component: CameraExample,
   },
   {
     name: 'Geometries',
