@@ -3,6 +3,7 @@ import React from 'react';
 import ClothExample from './AnimationCloth/index';
 import GeometriesExample from './Geometries/index';
 import CameraExample from './WebGLCameraExample/index';
+import GeometryShapesExample from './GeometryShapes/index';
 
 const examples = [
   {
@@ -16,6 +17,10 @@ const examples = [
   {
     name: 'Geometries',
     component: GeometriesExample,
+  },
+  {
+    name: 'Geometry Shapes',
+    component: GeometryShapesExample,
   },
 ];
 

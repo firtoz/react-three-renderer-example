@@ -5,9 +5,12 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="2">
+          <list size="5">
             <item index="0" class="java.lang.String" itemvalue="ref" />
             <item index="1" class="java.lang.String" itemvalue="key" />
+            <item index="2" class="java.lang.String" itemvalue="position" />
+            <item index="3" class="java.lang.String" itemvalue="rotation" />
+            <item index="4" class="java.lang.String" itemvalue="scale" />
           </list>
         </value>
       </option>

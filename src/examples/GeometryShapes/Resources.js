@@ -57,6 +57,11 @@ class Resources extends React.Component {
           wrapT={THREE.RepeatWrapping}
           repeat={this.textureRepeat}
         />
+        <meshBasicMaterial
+          resourceId="hoverMaterial"
+          color={0xff0000}
+          side={THREE.DoubleSide}
+        />
         <meshPhongMaterial
           resourceId="phongMaterial"
           side={THREE.DoubleSide}

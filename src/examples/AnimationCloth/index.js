@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import THREE from 'three.js';
+import Stats from 'stats.js';
 
 import React3 from 'react-three-renderer';
 
@@ -24,7 +25,6 @@ const diff = new THREE.Vector3();
 
 import TrackballControls from '../../ref/trackball';
 
-import Stats from 'stats.js';
 
 function satisfyConstrains(p1, p2, distance) {
   diff.subVectors(p2.position, p1.position);
@@ -78,13 +78,6 @@ class AnimationCloth extends ExampleBase {
     this.pinsFormation = pinsFormation;
 
     this.fog = new THREE.Fog(0xcce0ff, 500, 10000);
-
-    this.arrowDirection = new THREE.Vector3(0, 1, 0);
-    this.arrowOrigin = new THREE.Vector3(0, 0, 0);
-    this.arrowLength = new THREE.Vector3(0, 1, 0);
-
-    this.arrowPosition = new THREE.Vector3(-200, 0, -200);
-
 
     this.windForce = new THREE.Vector3(0, 0, 0);
 
