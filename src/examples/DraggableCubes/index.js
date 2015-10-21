@@ -13,8 +13,6 @@ import ExampleBase from '../ExampleBase';
 import TrackballControls from '../../ref/trackball';
 
 class AllCubes extends React.Component {
-  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
-
   constructor(props, context) {
     super(props, context);
 
@@ -32,6 +30,8 @@ class AllCubes extends React.Component {
       cubePositions,
     };
   }
+
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   render() {
     return (<group>
@@ -216,6 +216,15 @@ class DraggableCubes extends ExampleBase {
         shadowMapEnabled
         shadowMapType={THREE.PCFShadowMap}
       >
+        <resources>
+          <boxGeometry
+            resourceId="boxGeometry"
+
+            width={40}
+            height={40}
+            depth={40}
+          />
+        </resources>
         <scene>
           <perspectiveCamera
             fov={70}
@@ -245,15 +254,6 @@ class DraggableCubes extends ExampleBase {
             shadowMapWidth={2048}
             shadowMapHeight={2048}
           />
-          <resources>
-            <boxGeometry
-              resourceId="boxGeometry"
-
-              width={40}
-              height={40}
-              depth={40}
-            />
-          </resources>
           <AllCubes/>
           <mesh
             receiveShadow
