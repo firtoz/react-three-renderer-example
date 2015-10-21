@@ -50,6 +50,8 @@ class DraggableCube extends React.Component {
     position: PropTypes.instanceOf(THREE.Vector3).isRequired,
   };
 
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
+
   constructor(props, context) {
     super(props, context);
 
@@ -108,43 +110,9 @@ class DraggableCubes extends ExampleBase {
     };
 
     this.lightPosition = new THREE.Vector3(0, 500, 2000);
-
-    //this.directionalLightPosition = new THREE.Vector3(0, 1, 0);
-    //
-    //this.objectPositions = [
-    //  new THREE.Vector3(-400, 0, 200),
-    //  new THREE.Vector3(-200, 0, 200),
-    //  new THREE.Vector3(0, 0, 200),
-    //  new THREE.Vector3(200, 0, 200),
-    //  new THREE.Vector3(-400, 0, 0),
-    //  new THREE.Vector3(-200, 0, 0),
-    //  new THREE.Vector3(0, 0, 0),
-    //  new THREE.Vector3(200, 0, 0),
-    //  new THREE.Vector3(400, 0, 0),
-    //
-    //  new THREE.Vector3(-400, 0, -200),
-    //  new THREE.Vector3(-200, 0, -200),
-    //  new THREE.Vector3(0, 0, -200),
-    //  new THREE.Vector3(200, 0, -200),
-    //  new THREE.Vector3(400, 0, -200),
-    //];
-    //
-    //this.lathePoints = [];
-    //
-    //for (let i = 0; i < 50; i++) {
-    //  this.lathePoints.push(new THREE.Vector3(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, 0, ( i - 5 ) * 2));
-    //}
-    //
-    //this.arrowDir = new THREE.Vector3(0, 1, 0);
-    //this.arrowOrigin = new THREE.Vector3(0, 0, 0);
-    //
-    //this.scenePosition = new THREE.Vector3(0, 0, 0);
-    //
-    //this.state = {
-    //  ...this.state,
-    //  timer: Date.now() * 0.0001,
-    //};
   }
+
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   _onAnimate = () => {
     this._onAnimateInternal();
