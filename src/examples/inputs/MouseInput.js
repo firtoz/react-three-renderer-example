@@ -6,6 +6,11 @@ import SyntheticMouseEvent from 'react/lib/SyntheticMouseEvent';
 
 const tempVector2 = new THREE.Vector2();
 
+const listenerCallbackNames = {
+  mousedown: 'onMouseDown',
+  mouseup: 'onMouseUp',
+};
+
 class MouseInput {
   constructor(scene, container, camera) {
     this._scene = scene;
@@ -19,30 +24,126 @@ class MouseInput {
       this._mouse.set(event.clientX, event.clientY);
     };
 
-    this._onMouseDown = (event) => {
-      const syntheticEvent = new SyntheticMouseEvent(null, null, event, event.target);
-
-      const intersections = this._getIntersections(tempVector2.set(syntheticEvent.clientX, syntheticEvent.clientY));
-
-      ReactUpdates.batchedUpdates(() => {
-        intersections.forEach(intersection => {
-          if (syntheticEvent.isDefaultPrevented()) {
-            return;
-          }
-
-          const object = intersection.object;
-
-          React3.eventDispatcher.dispatchEvent(object, 'onMouseDown', syntheticEvent);
-        });
-      });
-    };
-
     this._containerRect = this._container.getBoundingClientRect();
 
     this._hoverObjectMap = {};
 
     document.addEventListener('mousemove', this._onMouseMove, false);
-    container.addEventListener('mousedown', this._onMouseDown, true);
+
+    this._intersectionsForClick = null;
+
+    this._caughtListenersCleanupFunctions = [];
+
+    Object.keys(listenerCallbackNames).forEach(eventName => {
+      let boundListener;
+
+      const listenerCallbackName = listenerCallbackNames[eventName];
+      switch (eventName) {
+      case 'mousedown':
+        boundListener = this._onMouseDown.bind(this, listenerCallbackName);
+        break;
+      case 'mouseup':
+        boundListener = this._onMouseUp.bind(this, listenerCallbackName);
+        break;
+      default:
+        break;
+      }
+
+      if (boundListener) {
+        container.addEventListener(eventName, boundListener, true);
+
+        this._caughtListenersCleanupFunctions.push(() => {
+          container.removeEventListener(eventName, boundListener, true);
+        });
+      }
+    });
+  }
+
+  _onMouseDown = (callbackName, mouseEvent) => {
+    ReactUpdates.batchedUpdates(() => {
+      const {
+        event,
+        intersections,
+        } = this._intersectAndDispatch(callbackName, mouseEvent);
+
+      if (event.isDefaultPrevented() || event.isPropagationStopped()) {
+        this._intersectionsForClick = null;
+      } else {
+        this._intersectionsForClick = intersections;
+      }
+    });
+  };
+
+  _onMouseUp = (callbackName, mouseEvent) => {
+    ReactUpdates.batchedUpdates(() => {
+      const {
+        event,
+        intersections,
+        } = this._intersectAndDispatch(callbackName, mouseEvent);
+
+      if (!(event.isDefaultPrevented() || event.isPropagationStopped())) {
+        if (this._intersectionsForClick === null) {
+          return;
+        }
+
+        // intersect current intersections with the intersections for click
+        //   call xzibit ASAP we have a good one son
+        //     it wasn't that good
+
+        const intersectionUUIDMap = this._intersectionsForClick.reduce((map, intersection) => {
+          map[intersection.object.uuid] = intersection;
+
+          return map;
+        }, {});
+
+        for (let i = 0; i < intersections.length; ++i) {
+          if (event.isDefaultPrevented() || event.isPropagationStopped()) {
+            return;
+          }
+
+          const intersection = intersections[i];
+
+          const object = intersection.object;
+
+          const uuid = object.uuid;
+
+          if (intersectionUUIDMap[uuid]) {
+            // oh boy oh boy here we go, we got a clicker
+
+            const clickEvent = new MouseEvent('click', event);
+
+            React3.eventDispatcher.dispatchEvent(object, 'onClick', new SyntheticMouseEvent(null, null, clickEvent, event.target), intersection);
+          }
+        }
+      }
+    });
+
+    this._intersectionsForClick = null;
+  };
+
+  _intersectAndDispatch(callbackName, mouseEvent) {
+    const event = new SyntheticMouseEvent(null, null, mouseEvent, mouseEvent.target);
+
+    const intersections = this._getIntersections(tempVector2.set(event.clientX, event.clientY));
+
+    ReactUpdates.batchedUpdates(() => {
+      for (let i = 0; i < intersections.length; ++i) {
+        const intersection = intersections[i];
+
+        if (event.isDefaultPrevented() || event.isPropagationStopped()) {
+          return;
+        }
+
+        const object = intersection.object;
+
+        React3.eventDispatcher.dispatchEvent(object, callbackName, event, intersection);
+      }
+    });
+
+    return {
+      event,
+      intersections,
+    };
   }
 
   _getIntersections(mouseCoords) {
@@ -110,10 +211,11 @@ class MouseInput {
 
   dispose() {
     document.removeEventListener('mousemove', this._onMouseMove, false);
-    this._container.removeEventListener('mousedown', this._onMouseDown, true);
+
+    this._caughtListenersCleanupFunctions.forEach(cleanupFunction => cleanupFunction());
+    delete this._caughtListenersCleanupFunctions;
 
     delete this._onMouseMove;
-    delete this._onMouseDown;
   }
 }
 
