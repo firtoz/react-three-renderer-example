@@ -5,7 +5,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="7">
+          <list size="9">
             <item index="0" class="java.lang.String" itemvalue="ref" />
             <item index="1" class="java.lang.String" itemvalue="key" />
             <item index="2" class="java.lang.String" itemvalue="position" />
@@ -13,6 +13,8 @@
             <item index="4" class="java.lang.String" itemvalue="scale" />
             <item index="5" class="java.lang.String" itemvalue="resourceid" />
             <item index="6" class="java.lang.String" itemvalue="length" />
+            <item index="7" class="java.lang.String" itemvalue="onmouseenter" />
+            <item index="8" class="java.lang.String" itemvalue="onmouseleave" />
           </list>
         </value>
       </option>
