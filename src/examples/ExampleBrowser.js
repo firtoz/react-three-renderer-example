@@ -4,6 +4,7 @@ import ClothExample from './AnimationCloth/index';
 import GeometriesExample from './Geometries/index';
 import CameraExample from './WebGLCameraExample/index';
 import GeometryShapesExample from './GeometryShapes/index';
+import DraggableCubes from './DraggableCubes/index';
 
 const examples = [
   {
@@ -21,6 +22,10 @@ const examples = [
   {
     name: 'Geometry Shapes',
     component: GeometryShapesExample,
+  },
+  {
+    name: 'Draggable Cubes',
+    component: DraggableCubes,
   },
 ];
 
