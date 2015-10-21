@@ -11,8 +11,6 @@ import Resources from './Resources';
 
 import Shapes from './Shapes';
 
-import MouseInput from '../inputs/MouseInput';
-
 class GeometryShapes extends ExampleBase {
   constructor(props, context) {
     super(props, context);
@@ -37,7 +35,6 @@ class GeometryShapes extends ExampleBase {
     this.stats = new Stats();
 
     const container = this.refs.container;
-    this.mouseInput = new MouseInput(this.refs.scene, container, this.refs.camera);
 
     this.stats.domElement.style.position = 'absolute';
     this.stats.domElement.style.top = '0px';
@@ -47,10 +44,6 @@ class GeometryShapes extends ExampleBase {
     container.addEventListener('mousedown', this._onDocumentMouseDown, false);
     container.addEventListener('touchstart', this._onDocumentTouchStart, false);
     document.addEventListener('touchmove', this._onDocumentTouchMove, false);
-  }
-
-  componentDidUpdate() {
-    this.mouseInput.containerResized();
   }
 
   componentWillUnmount() {
@@ -64,9 +57,6 @@ class GeometryShapes extends ExampleBase {
     document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
 
     delete this.stats;
-
-    this.mouseInput.dispose();
-    delete this.mouseInput;
   }
 
   _onDocumentMouseDown = (event) => {
@@ -156,7 +146,6 @@ class GeometryShapes extends ExampleBase {
     }
 
     this.stats.update();
-    this.mouseInput.update();
   }
 
   render() {

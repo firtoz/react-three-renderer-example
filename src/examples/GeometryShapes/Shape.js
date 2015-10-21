@@ -26,37 +26,7 @@ class Shape extends React.Component {
     s: PropTypes.number.isRequired,
   };
 
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      hovered: false,
-    };
-
-    this._enterCount = 0;
-  }
-
   shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
-
-  _onMouseEnter = () => {
-    if (this._enterCount === 0) {
-      this.setState({
-        hovered: true,
-      });
-    }
-
-    this._enterCount++;
-  };
-
-  _onMouseLeave = () => {
-    this._enterCount--;
-
-    if (this._enterCount === 0) {
-      this.setState({
-        hovered: false,
-      });
-    }
-  };
 
   render() {
     const {
@@ -65,20 +35,14 @@ class Shape extends React.Component {
       rz,
       s,
       resourceId,
-      color: propColor,
+      color,
       x,
       y,
       z,
       } = this.props;
 
-    const {
-      hovered,
-      } = this.state;
-
     const rotation = new THREE.Euler(rx, ry, rz);
     const scale = new THREE.Vector3(s, s, s);
-
-    const color = hovered ? 0xff0000 : propColor;
 
     return (<group>
       <mesh
@@ -86,15 +50,13 @@ class Shape extends React.Component {
         position={new THREE.Vector3(x, y, z - 175)}
         rotation={rotation}
         scale={scale}
-        onMouseEnter={this._onMouseEnter}
-        onMouseLeave={this._onMouseLeave}
       >
         <shapeGeometryResource
           resourceId={resourceId}
           type="shape"
         />
         <materialResource
-          resourceId={hovered ? 'hoverMaterial' : 'phongMaterial'}
+          resourceId={'phongMaterial'}
         />
       </mesh>
       <mesh
@@ -102,8 +64,6 @@ class Shape extends React.Component {
         position={new THREE.Vector3(x, y, z - 125)}
         rotation={rotation}
         scale={scale}
-        onMouseEnter={this._onMouseEnter}
-        onMouseLeave={this._onMouseLeave}
       >
         <shapeGeometryResource
           resourceId={resourceId}
@@ -119,8 +79,6 @@ class Shape extends React.Component {
         position={new THREE.Vector3(x, y, z - 75)}
         rotation={rotation}
         scale={scale}
-        onMouseEnter={this._onMouseEnter}
-        onMouseLeave={this._onMouseLeave}
       >
         <extrudeGeometry
           settings={extrudeSettings}
@@ -138,8 +96,6 @@ class Shape extends React.Component {
         position={new THREE.Vector3(x, y, z - 25)}
         rotation={rotation}
         scale={scale}
-        onMouseEnter={this._onMouseEnter}
-        onMouseLeave={this._onMouseLeave}
       >
         <shapeGeometryResource
           resourceId={resourceId}
@@ -155,8 +111,6 @@ class Shape extends React.Component {
         position={new THREE.Vector3(x, y, z + 25)}
         rotation={rotation}
         scale={scale}
-        onMouseEnter={this._onMouseEnter}
-        onMouseLeave={this._onMouseLeave}
       >
         <shapeGeometryResource
           resourceId={resourceId}
@@ -173,8 +127,6 @@ class Shape extends React.Component {
         position={new THREE.Vector3(x, y, z + 75)}
         rotation={rotation}
         scale={scale}
-        onMouseEnter={this._onMouseEnter}
-        onMouseLeave={this._onMouseLeave}
       >
         <shapeGeometryResource
           resourceId={resourceId}
@@ -192,8 +144,6 @@ class Shape extends React.Component {
         position={new THREE.Vector3(x, y, z + 125)}
         rotation={rotation}
         scale={scale}
-        onMouseEnter={this._onMouseEnter}
-        onMouseLeave={this._onMouseLeave}
       >
         <shapeGeometryResource
           resourceId={resourceId}
