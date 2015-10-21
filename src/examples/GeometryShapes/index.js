@@ -35,15 +35,17 @@ class GeometryShapes extends ExampleBase {
 
   componentDidMount() {
     this.stats = new Stats();
-    this.mouseInput = new MouseInput(this.refs.scene, this.refs.container, this.refs.camera);
+
+    const container = this.refs.container;
+    this.mouseInput = new MouseInput(this.refs.scene, container, this.refs.camera);
 
     this.stats.domElement.style.position = 'absolute';
     this.stats.domElement.style.top = '0px';
 
-    this.refs.container.appendChild(this.stats.domElement);
+    container.appendChild(this.stats.domElement);
 
-    document.addEventListener('mousedown', this._onDocumentMouseDown, false);
-    document.addEventListener('touchstart', this._onDocumentTouchStart, false);
+    container.addEventListener('mousedown', this._onDocumentMouseDown, false);
+    container.addEventListener('touchstart', this._onDocumentTouchStart, false);
     document.addEventListener('touchmove', this._onDocumentTouchMove, false);
   }
 
@@ -52,12 +54,14 @@ class GeometryShapes extends ExampleBase {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('mousedown', this._onDocumentMouseDown, false);
-    document.removeEventListener('touchstart', this._onDocumentTouchStart, false);
+    const container = this.refs.container;
+
+    container.removeEventListener('mousedown', this._onDocumentMouseDown, false);
+    container.removeEventListener('touchstart', this._onDocumentTouchStart, false);
     document.removeEventListener('touchmove', this._onDocumentTouchMove, false);
-    document.removeEventListener('touchmove', this._onDocumentMouseMove, false);
-    document.removeEventListener('touchmove', this._onDocumentMouseUp, false);
-    document.removeEventListener('touchmove', this._onDocumentMouseOut, false);
+    document.removeEventListener('mousemove', this._onDocumentMouseMove, false);
+    document.removeEventListener('mouseup', this._onDocumentMouseUp, false);
+    document.removeEventListener('mouseout', this._onDocumentMouseOut, false);
 
     delete this.stats;
 
