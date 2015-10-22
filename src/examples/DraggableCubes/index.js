@@ -12,6 +12,110 @@ import ExampleBase from '../ExampleBase';
 
 import TrackballControls from '../../ref/trackball';
 
+import MouseInput from '../inputs/MouseInput';
+
+class DraggableCube extends React.Component {
+  static propTypes = {
+    position: PropTypes.instanceOf(THREE.Vector3).isRequired,
+  };
+
+  constructor(props, context) {
+    super(props, context);
+
+    this.rotation = new THREE.Euler(
+      Math.random() * 2 * Math.PI,
+      Math.random() * 2 * Math.PI,
+      Math.random() * 2 * Math.PI
+    );
+
+    this.scale = new THREE.Vector3(
+      Math.random() * 2 + 1,
+      Math.random() * 2 + 1,
+      Math.random() * 2 + 1
+    );
+
+    this.color = new THREE.Color(Math.random() * 0xffffff);
+
+    const hsl = this.color.getHSL();
+
+    hsl.l = Math.min(1, hsl.l * 1.1);
+
+    this.hoverColor = new THREE.Color().setHSL(hsl);
+
+    this.state = {
+      hovered: false,
+      pressed: false,
+    };
+  }
+
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
+
+  _onMouseEnter = (event, intersection, depth) => {
+    if (depth === 0) {
+      // is it the first intersection?
+      event.preventDefault();
+
+      this.setState({
+        'hovered': true,
+      });
+    }
+  };
+
+  _onMouseLeave = (event) => {
+    if (this.state.hovered) {
+      this.setState({
+        'hovered': false,
+      });
+    }
+  };
+
+
+  render() {
+    const {
+      position,
+      } = this.props;
+
+    const {
+      rotation,
+      scale,
+      color: idleColor,
+      hoverColor,
+      } = this;
+
+    const {
+      hovered,
+      pressed,
+      } = this.state;
+
+    let color;
+
+    if (hovered) {
+      color = hoverColor;
+    } else {
+      color = idleColor;
+    }
+
+    return (<mesh
+      position={position}
+      rotation={rotation}
+      scale={scale}
+
+      castShadow
+      receiveShadow
+
+      onMouseEnter={this._onMouseEnter}
+      onMouseLeave={this._onMouseLeave}
+    >
+      <geometryResource
+        resourceId="boxGeometry"
+      />
+      <meshLambertMaterial
+        color={color}
+      />
+    </mesh>);
+  }
+}
+
 class AllCubes extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -29,9 +133,15 @@ class AllCubes extends React.Component {
     this.state = {
       cubePositions,
     };
+
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.offset = new THREE.Vector3();
+    this.intersected = null;
+    this.selected = null;
   }
 
-  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
+  //shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   render() {
     return (<group>
@@ -42,60 +152,6 @@ class AllCubes extends React.Component {
         />);
       })}
     </group>);
-  }
-}
-
-class DraggableCube extends React.Component {
-  static propTypes = {
-    position: PropTypes.instanceOf(THREE.Vector3).isRequired,
-  };
-
-  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
-
-  constructor(props, context) {
-    super(props, context);
-
-    this.rotation = new THREE.Euler(
-      Math.random() * 2 * Math.PI,
-      Math.random() * 2 * Math.PI,
-      Math.random() * 2 * Math.PI
-    );
-
-    this.scale = new THREE.Vector3(
-      Math.random() * 2 + 1,
-      Math.random() * 2 + 1,
-      Math.random() * 2 + 1
-    );
-
-    this.color = Math.random() * 0xffffff;
-  }
-
-  render() {
-    const {
-      position,
-      } = this.props;
-
-    const {
-      rotation,
-      scale,
-      color,
-      } = this;
-
-    return (<mesh
-      position={position}
-      rotation={rotation}
-      scale={scale}
-
-      castShadow
-      receiveShadow
-    >
-      <geometryResource
-        resourceId="boxGeometry"
-      />
-      <meshLambertMaterial
-        color={color}
-      />
-    </mesh>);
   }
 }
 
@@ -112,7 +168,7 @@ class DraggableCubes extends ExampleBase {
     this.lightPosition = new THREE.Vector3(0, 500, 2000);
   }
 
-  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
+  //shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   _onAnimate = () => {
     this._onAnimateInternal();
@@ -124,9 +180,16 @@ class DraggableCubes extends ExampleBase {
     this.stats.domElement.style.position = 'absolute';
     this.stats.domElement.style.top = '0px';
 
-    this.refs.container.appendChild(this.stats.domElement);
+    const {
+      scene,
+      container,
+      camera,
+      mouseInput,
+      } = this.refs;
 
-    const controls = new TrackballControls(this.refs.camera);
+    container.appendChild(this.stats.domElement);
+
+    const controls = new TrackballControls(camera);
 
     controls.rotateSpeed = 1.0;
     controls.zoomSpeed = 1.2;
@@ -139,6 +202,16 @@ class DraggableCubes extends ExampleBase {
     this.controls = controls;
 
     this.controls.addEventListener('change', this._onTrackballChange);
+
+    mouseInput.ready(scene, container, camera);
+  }
+
+  componentDidUpdate() {
+    const {
+      mouseInput,
+      } = this.refs;
+
+    mouseInput.containerResized();
   }
 
   _onTrackballChange = () => {
@@ -153,6 +226,7 @@ class DraggableCubes extends ExampleBase {
 
     this.controls.dispose();
     delete this.controls;
+
     delete this.stats;
   }
 
@@ -172,7 +246,9 @@ class DraggableCubes extends ExampleBase {
       cameraRotation,
       } = this.state;
 
-    return (<div ref="container">
+    return (<div
+      ref="container"
+    >
       <React3
         width={width}
         height={height}
@@ -183,7 +259,12 @@ class DraggableCubes extends ExampleBase {
         sortObjects={false}
         shadowMapEnabled
         shadowMapType={THREE.PCFShadowMap}
+        clearColor={0xf0f0f0}
       >
+        <module
+          ref="mouseInput"
+          descriptor={MouseInput}
+        />
         <resources>
           <boxGeometry
             resourceId="boxGeometry"
@@ -193,7 +274,7 @@ class DraggableCubes extends ExampleBase {
             depth={40}
           />
         </resources>
-        <scene>
+        <scene ref="scene">
           <perspectiveCamera
             fov={70}
             aspect={width / height}
@@ -225,6 +306,7 @@ class DraggableCubes extends ExampleBase {
           <AllCubes/>
           <mesh
             receiveShadow
+            ref="plane"
           >
             <planeBufferGeometry
               width={2000}
