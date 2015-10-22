@@ -18,7 +18,6 @@ class GeometryShapes extends ExampleBase {
     this.cameraPosition = new THREE.Vector3(0, 150, 500);
     this.groupPosition = new THREE.Vector3(0, 50, 0);
 
-
     this.targetRotationOnMouseDown = 0;
 
     this.mouseX = 0;
