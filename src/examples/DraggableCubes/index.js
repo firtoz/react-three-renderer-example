@@ -36,11 +36,15 @@ class DraggableCube extends React.Component {
 
     this.color = new THREE.Color(Math.random() * 0xffffff);
 
+
     const hsl = this.color.getHSL();
 
+    hsl.s = Math.min(1, hsl.s * 1.1);
     hsl.l = Math.min(1, hsl.l * 1.1);
 
-    this.hoverColor = new THREE.Color().setHSL(hsl);
+    const {h, s, l} = hsl;
+
+    this.hoverColor = new THREE.Color().setHSL(h, s, l);
 
     this.state = {
       hovered: false,
@@ -50,18 +54,22 @@ class DraggableCube extends React.Component {
 
   shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
-  _onMouseEnter = (event, intersection, depth) => {
-    if (depth === 0) {
-      // is it the first intersection?
-      event.preventDefault();
-
-      this.setState({
-        'hovered': true,
-      });
-    }
+  _onMouseEnter = () => {
+    this.setState({
+      'hovered': true,
+    });
   };
 
-  _onMouseLeave = (event) => {
+  _onMouseDown = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    //this.setState({
+    //  'hovered': true,
+    //});
+  };
+
+  _onMouseLeave = () => {
     if (this.state.hovered) {
       this.setState({
         'hovered': false,
@@ -95,24 +103,36 @@ class DraggableCube extends React.Component {
       color = idleColor;
     }
 
-    return (<mesh
+    return (<group
       position={position}
       rotation={rotation}
       scale={scale}
-
-      castShadow
-      receiveShadow
-
-      onMouseEnter={this._onMouseEnter}
-      onMouseLeave={this._onMouseLeave}
     >
-      <geometryResource
-        resourceId="boxGeometry"
-      />
-      <meshLambertMaterial
-        color={color}
-      />
-    </mesh>);
+      <mesh
+        castShadow
+        receiveShadow
+
+        onMouseEnter={this._onMouseEnter}
+        onMouseDown={this._onMouseDown}
+        onMouseLeave={this._onMouseLeave}
+      >
+        <geometryResource
+          resourceId="boxGeometry"
+        />
+        <meshLambertMaterial
+          color={color}
+        />
+      </mesh>
+      {hovered ? <mesh>
+        <geometryResource
+          resourceId="boxGeometry"
+        />
+        <meshBasicMaterial
+          color={0xffff00}
+          wireframe
+        />
+      </mesh> : null}
+    </group>);
   }
 }
 
@@ -141,7 +161,7 @@ class AllCubes extends React.Component {
     this.selected = null;
   }
 
-  //shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   render() {
     return (<group>
@@ -168,7 +188,7 @@ class DraggableCubes extends ExampleBase {
     this.lightPosition = new THREE.Vector3(0, 500, 2000);
   }
 
-  //shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   _onAnimate = () => {
     this._onAnimateInternal();
