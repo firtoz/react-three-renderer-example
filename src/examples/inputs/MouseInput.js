@@ -14,6 +14,14 @@ const listenerCallbackNames = {
   mouseup: 'onMouseUp',
 };
 
+const mouseEvents = [
+  'onMouseEnter',
+  'onMouseLeave',
+  'onMouseDown',
+  'onMouseUp',
+  'onClick',
+];
+
 class MouseInput extends Module {
   constructor() {
     super();
@@ -26,13 +34,7 @@ class MouseInput extends Module {
 
     Object.values(react3RendererInstance.threeElementDescriptors).forEach(elementDescriptor => {
       if (elementDescriptor instanceof Object3DDescriptor) {
-        [
-          'onMouseEnter',
-          'onMouseLeave',
-          'onMouseDown',
-          'onMouseUp',
-          'onClick',
-        ].forEach(eventName => {
+        mouseEvents.forEach(eventName => {
           elementDescriptor.hasEvent(eventName);
         });
       }
@@ -265,13 +267,7 @@ class MouseInput extends Module {
 
     Object.values(this._react3RendererInstance.threeElementDescriptors).forEach(elementDescriptor => {
       if (elementDescriptor instanceof Object3DDescriptor) {
-        [
-          'onMouseEnter',
-          'onMouseLeave',
-          'onMouseDown',
-          'onMouseUp',
-          'onClick',
-        ].forEach(eventName => {
+        mouseEvents.forEach(eventName => {
           elementDescriptor.removeProp(eventName);
         });
       }
