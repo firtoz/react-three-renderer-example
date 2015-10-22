@@ -7,6 +7,8 @@ import SyntheticMouseEvent from 'react/lib/SyntheticMouseEvent';
 import Module from 'react-three-renderer/lib/Module';
 import Object3DDescriptor from 'react-three-renderer/lib/descriptors/Object/Object3DDescriptor';
 
+import PropTypes from 'react/lib/ReactPropTypes';
+
 const tempVector2 = new THREE.Vector2();
 
 const listenerCallbackNames = {
@@ -22,9 +24,15 @@ const mouseEvents = [
   'onClick',
 ];
 
+const boolProps = {
+  _ignorePointerEvents: false,
+};
+
 class MouseInput extends Module {
   constructor() {
     super();
+
+    this._isReady = false;
   }
 
   setup(react3RendererInstance) {
@@ -37,11 +45,27 @@ class MouseInput extends Module {
         mouseEvents.forEach(eventName => {
           elementDescriptor.hasEvent(eventName);
         });
+
+        Object.keys(boolProps).forEach(propName => {
+          elementDescriptor.hasProp(propName, {
+            type: PropTypes.bool,
+            update(threeObject, value, hasProp) {
+              if (hasProp) {
+                threeObject.userData[propName] = value;
+              } else {
+                threeObject.userData[propName] = boolProps[propName];
+              }
+            },
+            default: boolProps[propName],
+          });
+        });
       }
     });
   }
 
   ready(scene, container, camera) {
+    this._isReady = true;
+
     this._scene = scene;
     this._container = container;
     this._camera = camera;
@@ -190,6 +214,10 @@ class MouseInput extends Module {
   }
 
   update() {
+    if (!this._isReady) {
+      return;
+    }
+
     const intersections = this._getIntersections(this._mouse);
 
     const hoverMapToUpdate = {
@@ -202,9 +230,14 @@ class MouseInput extends Module {
       clientY: this._mouse.y,
     });
 
+    // find first intersection that does not ignore pointer events
     for (let depth = 0; depth < intersections.length; ++depth) {
       const intersection = intersections[depth];
       const object = intersection.object;
+
+      if (object.userData && object.userData._ignorePointerEvents) {
+        continue;
+      }
 
       const uuid = object.uuid;
 
@@ -223,6 +256,9 @@ class MouseInput extends Module {
           React3.eventDispatcher.dispatchEvent(object, 'onMouseEnter', mouseEnterEvent, intersection, depth);
         }
       }
+
+      // we have found the first solid intersection, don't go further
+      break;
     }
 
     const mouseLeaveEvent = this._createSyntheticMouseEvent('mouseLeave', {
@@ -267,8 +303,8 @@ class MouseInput extends Module {
 
     Object.values(this._react3RendererInstance.threeElementDescriptors).forEach(elementDescriptor => {
       if (elementDescriptor instanceof Object3DDescriptor) {
-        mouseEvents.forEach(eventName => {
-          elementDescriptor.removeProp(eventName);
+        Object.keys(boolProps).concat(mouseEvents).forEach(propName => {
+          elementDescriptor.removeProp(propName);
         });
       }
     });
