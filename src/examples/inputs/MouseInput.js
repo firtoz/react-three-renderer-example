@@ -4,6 +4,9 @@ import ReactUpdates from 'react/lib/ReactUpdates';
 
 import SyntheticMouseEvent from 'react/lib/SyntheticMouseEvent';
 
+import Module from 'react-three-renderer/lib/Module';
+import Object3DDescriptor from 'react-three-renderer/lib/descriptors/Object/Object3DDescriptor';
+
 const tempVector2 = new THREE.Vector2();
 
 const listenerCallbackNames = {
@@ -11,8 +14,32 @@ const listenerCallbackNames = {
   mouseup: 'onMouseUp',
 };
 
-class MouseInput {
-  constructor(scene, container, camera) {
+class MouseInput extends Module {
+  constructor() {
+    super();
+  }
+
+  setup(react3RendererInstance) {
+    super.setup(react3RendererInstance);
+
+    this._react3RendererInstance = react3RendererInstance;
+
+    Object.values(react3RendererInstance.threeElementDescriptors).forEach(elementDescriptor => {
+      if (elementDescriptor instanceof Object3DDescriptor) {
+        [
+          'onMouseEnter',
+          'onMouseLeave',
+          'onMouseDown',
+          'onMouseUp',
+          'onClick',
+        ].forEach(eventName => {
+          elementDescriptor.hasEvent(eventName);
+        });
+      }
+    });
+  }
+
+  ready(scene, container, camera) {
     this._scene = scene;
     this._container = container;
     this._camera = camera;
@@ -110,9 +137,7 @@ class MouseInput {
           if (intersectionUUIDMap[uuid]) {
             // oh boy oh boy here we go, we got a clicker
 
-            const clickEvent = new MouseEvent('click', event);
-
-            React3.eventDispatcher.dispatchEvent(object, 'onClick', new SyntheticMouseEvent(null, null, clickEvent, event.target), intersection);
+            React3.eventDispatcher.dispatchEvent(object, 'onClick', this._createSyntheticMouseEvent('click', event), intersection);
           }
         }
       }
@@ -120,6 +145,10 @@ class MouseInput {
 
     this._intersectionsForClick = null;
   };
+
+  _createSyntheticMouseEvent(eventType, prototype) {
+    return new SyntheticMouseEvent(null, null, new MouseEvent(eventType, prototype), prototype.target);
+  }
 
   _intersectAndDispatch(callbackName, mouseEvent) {
     const event = new SyntheticMouseEvent(null, null, mouseEvent, mouseEvent.target);
@@ -165,7 +194,14 @@ class MouseInput {
       ...this._hoverObjectMap,
     };
 
-    intersections.forEach(intersection => {
+    const mouseEnterEvent = this._createSyntheticMouseEvent('mouseEnter', {
+      target: this._container,
+      clientX: this._mouse.x,
+      clientY: this._mouse.y,
+    });
+
+    for (let depth = 0; depth < intersections.length; ++depth) {
+      const intersection = intersections[depth];
       const object = intersection.object;
 
       const uuid = object.uuid;
@@ -181,13 +217,23 @@ class MouseInput {
           intersection,
         };
 
-        React3.eventDispatcher.dispatchEvent(object, 'onMouseEnter', intersection);
+        if (!(mouseEnterEvent.isDefaultPrevented() || mouseEnterEvent.isPropagationStopped())) {
+          React3.eventDispatcher.dispatchEvent(object, 'onMouseEnter', mouseEnterEvent, intersection, depth);
+        }
       }
+    }
+
+    const mouseLeaveEvent = this._createSyntheticMouseEvent('mouseLeave', {
+      target: this._container,
+      clientX: this._mouse.x,
+      clientY: this._mouse.y,
     });
 
     // delete all unseen uuids in hover map
     Object.keys(hoverMapToUpdate).forEach(uuid => {
-      React3.eventDispatcher.dispatchEvent(this._hoverObjectMap[uuid].object, 'onMouseLeave');
+      if (!(mouseEnterEvent.isDefaultPrevented() || mouseEnterEvent.isPropagationStopped())) {
+        React3.eventDispatcher.dispatchEvent(this._hoverObjectMap[uuid].object, 'onMouseLeave', mouseLeaveEvent);
+      }
 
       delete this._hoverObjectMap[uuid];
     });
@@ -216,6 +262,20 @@ class MouseInput {
     delete this._caughtListenersCleanupFunctions;
 
     delete this._onMouseMove;
+
+    Object.values(this._react3RendererInstance.threeElementDescriptors).forEach(elementDescriptor => {
+      if (elementDescriptor instanceof Object3DDescriptor) {
+        [
+          'onMouseEnter',
+          'onMouseLeave',
+          'onMouseDown',
+          'onMouseUp',
+          'onClick',
+        ].forEach(eventName => {
+          elementDescriptor.removeProp(eventName);
+        });
+      }
+    });
   }
 }
 
