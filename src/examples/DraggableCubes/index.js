@@ -196,6 +196,12 @@ class DraggableCubes extends ExampleBase {
             height={40}
             depth={40}
           />
+          <meshBasicMaterial
+            resourceId="highlightMaterial"
+
+            color={0xffff00}
+            wireframe
+          />
         </resources>
         <scene ref="scene">
           <perspectiveCamera

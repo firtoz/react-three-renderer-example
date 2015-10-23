@@ -25,7 +25,7 @@ const mouseEvents = [
 ];
 
 const boolProps = {
-  _ignorePointerEvents: false,
+  ignorePointerEvents: false,
 };
 
 class MouseInput extends Module {
@@ -288,7 +288,7 @@ class MouseInput extends Module {
       const intersection = intersections[depth];
       const object = intersection.object;
 
-      if (object.userData && object.userData._ignorePointerEvents) {
+      if (object.userData && object.userData.ignorePointerEvents) {
         continue;
       }
 

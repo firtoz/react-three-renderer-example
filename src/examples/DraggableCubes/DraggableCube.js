@@ -50,7 +50,7 @@ class DraggableCube extends React.Component {
 
     const {
       initialPosition,
-      } = this.props;
+      } = props;
 
     this.state = {
       hovered: false,
@@ -202,13 +202,14 @@ class DraggableCube extends React.Component {
           color={color}
         />
       </mesh>
-      {hoverHighlight ? <mesh>
+      {hoverHighlight ? <mesh
+        ignorePointerEvents
+      >
         <geometryResource
           resourceId="boxGeometry"
         />
-        <meshBasicMaterial
-          color={0xffff00}
-          wireframe
+        <materialResource
+          resourceId="highlightMaterial"
         />
       </mesh> : null}
     </group>);
