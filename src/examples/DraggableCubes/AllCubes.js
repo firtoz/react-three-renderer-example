@@ -11,6 +11,7 @@ import MouseInput from '../inputs/MouseInput';
 class AllCubes extends React.Component {
   static propTypes = {
     mouseInput: PropTypes.instanceOf(MouseInput),
+
     onCubesMounted: PropTypes.func.isRequired,
     onHoverStart: PropTypes.func.isRequired,
     onHoverEnd: PropTypes.func.isRequired,
@@ -115,6 +116,7 @@ class AllCubes extends React.Component {
   render() {
     const {
       mouseInput,
+
       hovering,
       dragging,
       } = this.props;
@@ -123,7 +125,9 @@ class AllCubes extends React.Component {
       {this.cubePositions.map((cubePosition, index) => {
         return (<DraggableCube
           key={index}
+
           mouseInput={mouseInput}
+
           initialPosition={cubePosition}
           onCreate={this._onCubeCreate.bind(this, index)}
           onMouseEnter={this._onCubeMouseEnter}

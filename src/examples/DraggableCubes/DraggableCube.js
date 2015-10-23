@@ -9,7 +9,9 @@ import MouseInput from '../inputs/MouseInput';
 class DraggableCube extends React.Component {
   static propTypes = {
     initialPosition: PropTypes.instanceOf(THREE.Vector3).isRequired,
+
     mouseInput: PropTypes.instanceOf(MouseInput),
+
     onCreate: PropTypes.func.isRequired,
 
     onMouseEnter: PropTypes.func.isRequired,
