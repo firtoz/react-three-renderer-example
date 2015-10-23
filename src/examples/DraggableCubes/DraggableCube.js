@@ -10,7 +10,7 @@ class DraggableCube extends React.Component {
   static propTypes = {
     initialPosition: PropTypes.instanceOf(THREE.Vector3).isRequired,
     mouseInput: PropTypes.instanceOf(MouseInput),
-    setPosition: PropTypes.func.isRequired,
+    onCreate: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -115,6 +115,14 @@ class DraggableCube extends React.Component {
     }
   };
 
+  _ref = (mesh) => {
+    const {
+      onCreate,
+      } = this.props;
+
+    onCreate(mesh);
+  };
+
   render() {
     const {
       rotation,
@@ -149,6 +157,8 @@ class DraggableCube extends React.Component {
         onMouseEnter={this._onMouseEnter}
         onMouseDown={this._onMouseDown}
         onMouseLeave={this._onMouseLeave}
+
+        ref={this._ref}
       >
         <geometryResource
           resourceId="boxGeometry"

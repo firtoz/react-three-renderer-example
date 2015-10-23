@@ -62,9 +62,11 @@ class DraggableCubes extends ExampleBase {
     this.controls = controls;
 
     this.controls.addEventListener('change', this._onTrackballChange);
-
-    mouseInput.ready(scene, container, camera);
   }
+
+  _onCubesMounted = (cubes) => {
+    this.cubes = cubes;
+  };
 
   componentDidUpdate() {
     const {
@@ -103,6 +105,8 @@ class DraggableCubes extends ExampleBase {
         } = this.refs;
 
       mouseInput.ready(scene, container, camera);
+      mouseInput.restrictIntersections(this.cubes);
+      mouseInput.setActive(false);
     }
 
     if (this.state.mouseInput !== mouseInput) {
@@ -186,6 +190,8 @@ class DraggableCubes extends ExampleBase {
           />
           <AllCubes
             mouseInput={mouseInput}
+
+            onCubesMounted={this._onCubesMounted}
           />
           <mesh
             receiveShadow

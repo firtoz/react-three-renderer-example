@@ -33,6 +33,11 @@ class MouseInput extends Module {
     super();
 
     this._isReady = false;
+    this._active = true;
+    this._restrictIntersections = false;
+    this._objectsToIntersect = null;
+
+    this._restrictedIntersectionRecursive = false;
   }
 
   setup(react3RendererInstance) {
@@ -67,6 +72,17 @@ class MouseInput extends Module {
     return this._isReady;
   }
 
+  setActive(active) {
+    this._active = active;
+  }
+
+  restrictIntersections(objects, recursive = false) {
+    this._restrictIntersections = true;
+    this._objectsToIntersect = objects;
+
+    this._restrictedIntersectionRecursive = recursive;
+  }
+
   ready(scene, container, camera) {
     this._isReady = true;
 
@@ -79,6 +95,10 @@ class MouseInput extends Module {
 
     this._onMouseMove = (event) => {
       this._mouse.set(event.clientX, event.clientY);
+
+      if (!this._active) {
+        this._updateEnterLeave();
+      }
     };
 
     this._containerRect = this._container.getBoundingClientRect();
@@ -210,6 +230,10 @@ class MouseInput extends Module {
 
     this._raycaster.setFromCamera(relativeMouseCoords, this._camera);
 
+    if (this._restrictIntersections) {
+      return this._raycaster.intersectObjects(this._objectsToIntersect, this._restrictedIntersectionRecursive);
+    }
+
     return this._raycaster.intersectObject(this._scene, true);
   }
 
@@ -241,6 +265,12 @@ class MouseInput extends Module {
       return;
     }
 
+    if (this._active) {
+      this._updateEnterLeave();
+    }
+  }
+
+  _updateEnterLeave() {
     const intersections = this._getIntersections(this._mouse);
 
     const hoverMapToUpdate = {
