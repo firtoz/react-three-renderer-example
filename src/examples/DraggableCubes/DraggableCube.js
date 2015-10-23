@@ -11,6 +11,14 @@ class DraggableCube extends React.Component {
     initialPosition: PropTypes.instanceOf(THREE.Vector3).isRequired,
     mouseInput: PropTypes.instanceOf(MouseInput),
     onCreate: PropTypes.func.isRequired,
+
+    onMouseEnter: PropTypes.func.isRequired,
+    onMouseLeave: PropTypes.func.isRequired,
+    onDragStart: PropTypes.func.isRequired,
+    onDragEnd: PropTypes.func.isRequired,
+
+    hovering: PropTypes.bool,
+    dragging: PropTypes.bool,
   };
 
   constructor(props, context) {
@@ -61,6 +69,10 @@ class DraggableCube extends React.Component {
     this.setState({
       'hovered': true,
     });
+
+    const {onMouseEnter} = this.props;
+
+    onMouseEnter();
   };
 
   _onMouseDown = (event, intersection) => {
@@ -80,6 +92,12 @@ class DraggableCube extends React.Component {
 
     document.addEventListener('mouseup', this._onDocumentMouseUp);
     document.addEventListener('mousemove', this._onDocumentMouseMove);
+
+    const {
+      onDragStart,
+      } = this.props;
+
+    onDragStart();
   };
 
   _onDocumentMouseMove = (event) => {
@@ -105,6 +123,12 @@ class DraggableCube extends React.Component {
 
     document.removeEventListener('mouseup', this._onDocumentMouseUp);
     document.removeEventListener('mousemove', this._onDocumentMouseMove);
+
+    const {
+      onDragEnd,
+      } = this.props;
+
+    onDragEnd();
   };
 
   _onMouseLeave = () => {
@@ -113,6 +137,12 @@ class DraggableCube extends React.Component {
         'hovered': false,
       });
     }
+
+    const {
+      onMouseLeave,
+      } = this.props;
+
+    onMouseLeave();
   };
 
   _ref = (mesh) => {
@@ -130,6 +160,10 @@ class DraggableCube extends React.Component {
       } = this;
 
     const {
+      dragging,
+      } = this.props;
+
+    const {
       hovered,
       pressed,
       position,
@@ -137,9 +171,10 @@ class DraggableCube extends React.Component {
 
     let color;
 
+    const hoverHighlight = (hovered && !dragging);
     if (pressed) {
       color = this.pressedColor;
-    } else if (hovered) {
+    } else if (hoverHighlight) {
       color = this.hoverColor;
     } else {
       color = this.color;
@@ -167,7 +202,7 @@ class DraggableCube extends React.Component {
           color={color}
         />
       </mesh>
-      {hovered ? <mesh>
+      {hoverHighlight ? <mesh>
         <geometryResource
           resourceId="boxGeometry"
         />

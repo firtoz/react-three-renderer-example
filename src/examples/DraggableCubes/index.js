@@ -23,6 +23,8 @@ class DraggableCubes extends ExampleBase {
       cameraPosition: new THREE.Vector3(0, 0, 1000),
       cameraRotation: new THREE.Euler(),
       mouseInput: null,
+      hovering: false,
+      dragging: false,
     };
 
     this.lightPosition = new THREE.Vector3(0, 500, 2000);
@@ -67,6 +69,31 @@ class DraggableCubes extends ExampleBase {
   _onCubesMounted = (cubes) => {
     this.cubes = cubes;
   };
+
+  _onHoverStart = () => {
+    this.setState({
+      hovering: true,
+    })
+  };
+
+  _onHoverEnd = () => {
+    this.setState({
+      hovering: false,
+    })
+  };
+
+  _onDragStart = () => {
+    this.setState({
+      dragging: true,
+    })
+  };
+
+  _onDragEnd = () => {
+    this.setState({
+      dragging: false,
+    })
+  };
+
 
   componentDidUpdate() {
     const {
@@ -129,10 +156,21 @@ class DraggableCubes extends ExampleBase {
       cameraPosition,
       cameraRotation,
       mouseInput,
+      hovering,
+      dragging,
       } = this.state;
+
+    const style = {};
+
+    if (dragging) {
+      style.cursor = 'move';
+    } else if (hovering) {
+      style.cursor = 'pointer';
+    }
 
     return (<div
       ref="container"
+      style={style}
     >
       <React3
         width={width}
@@ -192,6 +230,14 @@ class DraggableCubes extends ExampleBase {
             mouseInput={mouseInput}
 
             onCubesMounted={this._onCubesMounted}
+
+            onHoverStart={this._onHoverStart}
+            onHoverEnd={this._onHoverEnd}
+            onDragStart={this._onDragStart}
+            onDragEnd={this._onDragEnd}
+
+            hovering={hovering}
+            dragging={dragging}
           />
           <mesh
             receiveShadow
