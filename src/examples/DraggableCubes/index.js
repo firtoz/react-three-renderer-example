@@ -43,10 +43,8 @@ class DraggableCubes extends ExampleBase {
     this.stats.domElement.style.top = '0px';
 
     const {
-      scene,
       container,
       camera,
-      mouseInput,
       } = this.refs;
 
     container.appendChild(this.stats.domElement);
@@ -73,25 +71,25 @@ class DraggableCubes extends ExampleBase {
   _onHoverStart = () => {
     this.setState({
       hovering: true,
-    })
+    });
   };
 
   _onHoverEnd = () => {
     this.setState({
       hovering: false,
-    })
+    });
   };
 
   _onDragStart = () => {
     this.setState({
       dragging: true,
-    })
+    });
   };
 
   _onDragEnd = () => {
     this.setState({
       dragging: false,
-    })
+    });
   };
 
 
@@ -155,7 +153,9 @@ class DraggableCubes extends ExampleBase {
     const {
       cameraPosition,
       cameraRotation,
+
       mouseInput,
+
       hovering,
       dragging,
       } = this.state;
@@ -245,20 +245,6 @@ class DraggableCubes extends ExampleBase {
             hovering={hovering}
             dragging={dragging}
           />
-          <mesh
-            receiveShadow
-            ref="plane"
-          >
-            <planeBufferGeometry
-              width={2000}
-              height={2000}
-              widthSegments={8}
-              heightSegments={8}
-            />
-            <meshBasicMaterial
-              visible={false}
-            />
-          </mesh>
         </scene>
       </React3>
     </div>);
