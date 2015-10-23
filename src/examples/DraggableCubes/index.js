@@ -19,10 +19,10 @@ class DraggableCubes extends ExampleBase {
   constructor(props, context) {
     super(props, context);
 
-
     this.state = {
       cameraPosition: new THREE.Vector3(0, 0, 1000),
       cameraRotation: new THREE.Euler(),
+      mouseInput: null,
     };
 
     this.lightPosition = new THREE.Vector3(0, 500, 2000);
@@ -91,6 +91,26 @@ class DraggableCubes extends ExampleBase {
   }
 
   _onAnimateInternal() {
+    const {
+      mouseInput,
+      } = this.refs;
+
+    if (!mouseInput.isReady()) {
+      const {
+        scene,
+        container,
+        camera,
+        } = this.refs;
+
+      mouseInput.ready(scene, container, camera);
+    }
+
+    if (this.state.mouseInput !== mouseInput) {
+      this.setState({
+        mouseInput,
+      });
+    }
+
     this.stats.update();
     this.controls.update();
   }
@@ -104,6 +124,7 @@ class DraggableCubes extends ExampleBase {
     const {
       cameraPosition,
       cameraRotation,
+      mouseInput,
       } = this.state;
 
     return (<div
@@ -163,7 +184,9 @@ class DraggableCubes extends ExampleBase {
             shadowMapWidth={2048}
             shadowMapHeight={2048}
           />
-          <AllCubes/>
+          <AllCubes
+            mouseInput={mouseInput}
+          />
           <mesh
             receiveShadow
             ref="plane"

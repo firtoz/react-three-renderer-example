@@ -4,9 +4,13 @@ const {PropTypes} = React;
 import THREE from 'three.js';
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 
+import MouseInput from '../inputs/MouseInput';
+
 class DraggableCube extends React.Component {
   static propTypes = {
-    position: PropTypes.instanceOf(THREE.Vector3).isRequired,
+    initialPosition: PropTypes.instanceOf(THREE.Vector3).isRequired,
+    mouseInput: PropTypes.instanceOf(MouseInput),
+    setPosition: PropTypes.func.isRequired,
   };
 
   constructor(props, context) {
@@ -36,9 +40,14 @@ class DraggableCube extends React.Component {
     this.hoverColor = new THREE.Color().setHSL(h, s, l);
     this.pressedColor = 0xff0000;
 
+    const {
+      initialPosition,
+      } = this.props;
+
     this.state = {
       hovered: false,
       pressed: false,
+      position: initialPosition,
     };
   }
 
@@ -54,7 +63,7 @@ class DraggableCube extends React.Component {
     });
   };
 
-  _onMouseDown = (event) => {
+  _onMouseDown = (event, intersection) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -62,7 +71,29 @@ class DraggableCube extends React.Component {
       'pressed': true,
     });
 
+    const {
+      position,
+      } = this.state;
+
+    this._offset = intersection.point.clone().sub(position);
+    this._distance = intersection.distance;
+
     document.addEventListener('mouseup', this._onDocumentMouseUp);
+    document.addEventListener('mousemove', this._onDocumentMouseMove);
+  };
+
+  _onDocumentMouseMove = (event) => {
+    event.preventDefault();
+
+    const {
+      mouseInput,
+      } = this.props;
+
+    const ray:THREE.Ray = mouseInput.getCameraRay(new THREE.Vector2(event.clientX, event.clientY));
+
+    this.setState({
+      position: ray.at(this._distance).sub(this._offset),
+    });
   };
 
   _onDocumentMouseUp = (event) => {
@@ -73,6 +104,7 @@ class DraggableCube extends React.Component {
     });
 
     document.removeEventListener('mouseup', this._onDocumentMouseUp);
+    document.removeEventListener('mousemove', this._onDocumentMouseMove);
   };
 
   _onMouseLeave = () => {
@@ -85,10 +117,6 @@ class DraggableCube extends React.Component {
 
   render() {
     const {
-      position,
-      } = this.props;
-
-    const {
       rotation,
       scale,
       } = this;
@@ -96,6 +124,7 @@ class DraggableCube extends React.Component {
     const {
       hovered,
       pressed,
+      position,
       } = this.state;
 
     let color;

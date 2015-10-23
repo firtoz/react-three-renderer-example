@@ -4,7 +4,15 @@ import THREE from 'three.js';
 
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 
+const {PropTypes} = React;
+
+import MouseInput from '../inputs/MouseInput';
+
 class AllCubes extends React.Component {
+  static propTypes = {
+    mouseInput: PropTypes.instanceOf(MouseInput),
+  };
+
   constructor(props, context) {
     super(props, context);
 
@@ -18,9 +26,7 @@ class AllCubes extends React.Component {
       ));
     }
 
-    this.state = {
-      cubePositions,
-    };
+    this.cubePositions = cubePositions;
 
     this.mouse = new THREE.Vector2();
     this.offset = new THREE.Vector3();
@@ -30,11 +36,16 @@ class AllCubes extends React.Component {
   shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   render() {
+    const {
+      mouseInput,
+      } = this.props;
+
     return (<group>
-      {this.state.cubePositions.map((cubePosition, index) => {
+      {this.cubePositions.map((cubePosition, index) => {
         return (<DraggableCube
           key={index}
-          position={cubePosition}
+          mouseInput={mouseInput}
+          initialPosition={cubePosition}
         />);
       })}
     </group>);

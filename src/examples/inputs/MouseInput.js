@@ -63,6 +63,10 @@ class MouseInput extends Module {
     });
   }
 
+  isReady() {
+    return this._isReady;
+  }
+
   ready(scene, container, camera) {
     this._isReady = true;
 
@@ -207,6 +211,25 @@ class MouseInput extends Module {
     this._raycaster.setFromCamera(relativeMouseCoords, this._camera);
 
     return this._raycaster.intersectObject(this._scene, true);
+  }
+
+  /**
+   *
+   * @param {THREE.Vector2} mouseCoords usually an event's clientX and clientY
+   * @returns {THREE.Ray}
+   */
+  getCameraRay(mouseCoords) {
+    const relativeMouseCoords = this._getRelativeMouseCoords(mouseCoords);
+
+    const originalRay = this._raycaster.ray.clone();
+
+    this._raycaster.setFromCamera(relativeMouseCoords, this._camera);
+
+    const resultRay = this._raycaster.ray.clone();
+
+    this._raycaster.ray.copy(originalRay);
+
+    return resultRay;
   }
 
   containerResized() {
