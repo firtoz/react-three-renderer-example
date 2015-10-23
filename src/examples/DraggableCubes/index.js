@@ -52,11 +52,11 @@ class DraggableCube extends React.Component {
     };
   }
 
+  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
+
   componentWillUnmount() {
     document.removeEventListener('mouseup', this._onDocumentMouseUp);
   }
-
-  shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
   _onMouseEnter = () => {
     this.setState({
@@ -101,9 +101,6 @@ class DraggableCube extends React.Component {
     const {
       rotation,
       scale,
-      color: idleColor,
-      hoverColor,
-      pressedColor,
       } = this;
 
     const {
@@ -114,11 +111,11 @@ class DraggableCube extends React.Component {
     let color;
 
     if (pressed) {
-      color = pressedColor;
+      color = this.pressedColor;
     } else if (hovered) {
-      color = hoverColor;
+      color = this.hoverColor;
     } else {
-      color = idleColor;
+      color = this.color;
     }
 
     return (<group
