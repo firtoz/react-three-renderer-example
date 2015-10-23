@@ -36,7 +36,6 @@ class DraggableCube extends React.Component {
 
     this.color = new THREE.Color(Math.random() * 0xffffff);
 
-
     const hsl = this.color.getHSL();
 
     hsl.s = Math.min(1, hsl.s * 1.1);
@@ -45,11 +44,16 @@ class DraggableCube extends React.Component {
     const {h, s, l} = hsl;
 
     this.hoverColor = new THREE.Color().setHSL(h, s, l);
+    this.pressedColor = 0xff0000;
 
     this.state = {
       hovered: false,
       pressed: false,
     };
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mouseup', this._onDocumentMouseUp);
   }
 
   shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
@@ -64,9 +68,21 @@ class DraggableCube extends React.Component {
     event.preventDefault();
     event.stopPropagation();
 
-    //this.setState({
-    //  'hovered': true,
-    //});
+    this.setState({
+      'pressed': true,
+    });
+
+    document.addEventListener('mouseup', this._onDocumentMouseUp);
+  };
+
+  _onDocumentMouseUp = (event) => {
+    event.preventDefault();
+
+    this.setState({
+      pressed: false,
+    });
+
+    document.removeEventListener('mouseup', this._onDocumentMouseUp);
   };
 
   _onMouseLeave = () => {
@@ -76,7 +92,6 @@ class DraggableCube extends React.Component {
       });
     }
   };
-
 
   render() {
     const {
@@ -88,6 +103,7 @@ class DraggableCube extends React.Component {
       scale,
       color: idleColor,
       hoverColor,
+      pressedColor,
       } = this;
 
     const {
@@ -97,7 +113,9 @@ class DraggableCube extends React.Component {
 
     let color;
 
-    if (hovered) {
+    if (pressed) {
+      color = pressedColor;
+    } else if (hovered) {
       color = hoverColor;
     } else {
       color = idleColor;
