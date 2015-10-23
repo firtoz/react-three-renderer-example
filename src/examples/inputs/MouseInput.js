@@ -237,6 +237,7 @@ class MouseInput extends Module {
     return this._raycaster.intersectObject(this._scene, true);
   }
 
+  // noinspection JSUnusedGlobalSymbols
   /**
    *
    * @param {THREE.Vector2} mouseCoords usually an event's clientX and clientY
@@ -254,6 +255,21 @@ class MouseInput extends Module {
     this._raycaster.ray.copy(originalRay);
 
     return resultRay;
+  }
+
+  // noinspection JSUnusedGlobalSymbols
+  intersectObject(mouseCoords, object, recursive = false) {
+    const relativeMouseCoords = this._getRelativeMouseCoords(mouseCoords);
+
+    const originalRay = this._raycaster.ray.clone();
+
+    this._raycaster.setFromCamera(relativeMouseCoords, this._camera);
+
+    const intersections = this._raycaster.intersectObject(object, recursive);
+
+    this._raycaster.ray.copy(originalRay);
+
+    return intersections;
   }
 
   containerResized() {
