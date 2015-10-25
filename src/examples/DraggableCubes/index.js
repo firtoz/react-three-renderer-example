@@ -120,13 +120,13 @@ class DraggableCubes extends ExampleBase {
   _onAnimateInternal() {
     const {
       mouseInput,
+      camera,
       } = this.refs;
 
     if (!mouseInput.isReady()) {
       const {
         scene,
         container,
-        camera,
         } = this.refs;
 
       mouseInput.ready(scene, container, camera);
@@ -137,6 +137,12 @@ class DraggableCubes extends ExampleBase {
     if (this.state.mouseInput !== mouseInput) {
       this.setState({
         mouseInput,
+      });
+    }
+
+    if (this.state.camera !== camera) {
+      this.setState({
+        camera,
       });
     }
 
@@ -155,6 +161,7 @@ class DraggableCubes extends ExampleBase {
       cameraRotation,
 
       mouseInput,
+      camera,
 
       hovering,
       dragging,
@@ -234,6 +241,7 @@ class DraggableCubes extends ExampleBase {
           />
           <AllCubes
             mouseInput={mouseInput}
+            camera={camera}
 
             onCubesMounted={this._onCubesMounted}
 

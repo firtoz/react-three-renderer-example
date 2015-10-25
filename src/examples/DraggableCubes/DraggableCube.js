@@ -6,11 +6,18 @@ import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 
 import MouseInput from '../inputs/MouseInput';
 
+// shared plane for dragging purposes
+// it's good to share because you can drag only one cube at a time
+const dragPlane = new THREE.Plane();
+
+const backVector = new THREE.Vector3(0, 0, -1);
+
 class DraggableCube extends React.Component {
   static propTypes = {
     initialPosition: PropTypes.instanceOf(THREE.Vector3).isRequired,
 
     mouseInput: PropTypes.instanceOf(MouseInput),
+    camera: PropTypes.instanceOf(THREE.PerspectiveCamera),
 
     onCreate: PropTypes.func.isRequired,
 
@@ -81,23 +88,25 @@ class DraggableCube extends React.Component {
     event.preventDefault();
     event.stopPropagation();
 
-    this.setState({
-      'pressed': true,
-    });
-
     const {
       position,
       } = this.state;
 
+    const {
+      onDragStart,
+      camera,
+      } = this.props;
+
+    dragPlane.setFromNormalAndCoplanarPoint(backVector.clone().applyQuaternion(camera.quaternion), intersection.point);
+
     this._offset = intersection.point.clone().sub(position);
-    this._distance = intersection.distance;
 
     document.addEventListener('mouseup', this._onDocumentMouseUp);
     document.addEventListener('mousemove', this._onDocumentMouseMove);
 
-    const {
-      onDragStart,
-      } = this.props;
+    this.setState({
+      'pressed': true,
+    });
 
     onDragStart();
   };
@@ -111,9 +120,12 @@ class DraggableCube extends React.Component {
 
     const ray:THREE.Ray = mouseInput.getCameraRay(new THREE.Vector2(event.clientX, event.clientY));
 
-    this.setState({
-      position: ray.at(this._distance).sub(this._offset),
-    });
+    const intersection = dragPlane.intersectLine(new THREE.Line3(ray.origin, ray.origin.clone().add(ray.direction.clone().multiplyScalar(10000))));
+    if (intersection) {
+      this.setState({
+        position: intersection.sub(this._offset),
+      });
+    }
   };
 
   _onDocumentMouseUp = (event) => {

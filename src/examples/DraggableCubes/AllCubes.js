@@ -11,6 +11,7 @@ import MouseInput from '../inputs/MouseInput';
 class AllCubes extends React.Component {
   static propTypes = {
     mouseInput: PropTypes.instanceOf(MouseInput),
+    camera: PropTypes.instanceOf(THREE.PerspectiveCamera),
 
     onCubesMounted: PropTypes.func.isRequired,
     onHoverStart: PropTypes.func.isRequired,
@@ -116,6 +117,7 @@ class AllCubes extends React.Component {
   render() {
     const {
       mouseInput,
+      camera,
 
       hovering,
       dragging,
@@ -127,6 +129,7 @@ class AllCubes extends React.Component {
           key={index}
 
           mouseInput={mouseInput}
+          camera={camera}
 
           initialPosition={cubePosition}
           onCreate={this._onCubeCreate.bind(this, index)}
