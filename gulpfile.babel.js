@@ -47,4 +47,35 @@ gulp.task('webpack-dev-server', (callback) => {
   });
 });
 
+gulp.task('build-prod-with-addon', (callback) => {
+  webpackConfig.plugins = [
+
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': '"production"',
+        'ENABLE_REACT_ADDON_HOOKS': '"true"',
+      },
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      mangle: true,
+    }),
+  ];
+
+  // Start a webpack-dev-server
+  webpack(webpackConfig, (err, stats) => {
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+
+    gutil.log('[webpack]', stats.toString({
+      // output options
+    }));
+
+    callback();
+  });
+});
+
 gulp.task('default', ['webpack-dev-server']);
