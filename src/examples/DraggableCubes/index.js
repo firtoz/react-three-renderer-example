@@ -93,12 +93,19 @@ class DraggableCubes extends ExampleBase {
   };
 
 
-  componentDidUpdate() {
+  componentDidUpdate(newProps) {
     const {
       mouseInput,
       } = this.refs;
 
-    mouseInput.containerResized();
+    const {
+      width,
+      height,
+      } = this.props;
+
+    if (width !== newProps.width || height !== newProps.height) {
+      mouseInput.containerResized();
+    }
   }
 
   _onTrackballChange = () => {
