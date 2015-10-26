@@ -337,13 +337,17 @@ class MouseInput extends Module {
     });
 
     // delete all unseen uuids in hover map
-    Object.keys(hoverMapToUpdate).forEach(uuid => {
+    const unseenUUIDs = Object.keys(hoverMapToUpdate);
+
+    for (let i = 0; i < unseenUUIDs.length; ++i) {
+      const uuid = unseenUUIDs[i];
+
       if (!(mouseEnterEvent.isDefaultPrevented() || mouseEnterEvent.isPropagationStopped())) {
         React3.eventDispatcher.dispatchEvent(this._hoverObjectMap[uuid].object, 'onMouseLeave', mouseLeaveEvent);
       }
 
       delete this._hoverObjectMap[uuid];
-    });
+    }
   }
 
   _getRelativeMouseCoords(screenMouseCoords) {
