@@ -1,5 +1,6 @@
 import React from 'react';
 
+import SimpleExample from './Simple/index';
 import ClothExample from './AnimationCloth/index';
 import GeometriesExample from './Geometries/index';
 import CameraExample from './WebGLCameraExample/index';
@@ -7,6 +8,10 @@ import GeometryShapesExample from './GeometryShapes/index';
 import DraggableCubes from './DraggableCubes/index';
 
 const examples = [
+  {
+    name: 'Simple',
+    component: SimpleExample,
+  },
   {
     name: 'Cloth',
     component: ClothExample,
@@ -75,7 +80,7 @@ class ExampleBrowser extends React.Component {
 
     return (<div>
       <div id="panel" className="collapsed">
-        <h1><a href="http://threejs.org">three.js</a> / examples</h1>
+        <h1><a href="https://github.com/toxicFork/react-three-renderer/">react-three-renderer</a> / examples</h1>
         <div id="content">
           <div>
             <h2>webgl</h2>
