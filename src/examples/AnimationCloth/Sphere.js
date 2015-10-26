@@ -18,7 +18,7 @@ class Sphere extends React.Component {
     super(props, context);
 
     this.state = {
-      color: 'ffffff',
+      color: '0xaaaaaa',
     };
   }
 
