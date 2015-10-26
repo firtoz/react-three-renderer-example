@@ -4,8 +4,21 @@ import WebpackDevServer from 'webpack-dev-server';
 import gutil from 'gulp-util';
 import webpackConfig from './webpack.config.babel';
 import path from 'path';
+import runSequence from 'run-sequence';
 
 const cache = {};
+
+const config = {
+  prod: false,
+  addon: false,
+};
+
+gulp.task('dev-server-prod', () => {
+  config.prod = true;
+  config.addon = true;
+
+  runSequence('webpack-dev-server');
+});
 
 gulp.task('webpack-dev-server', (callback) => {
   void callback;
@@ -26,10 +39,25 @@ gulp.task('webpack-dev-server', (callback) => {
     include: path.join(__dirname, 'src'),
   });
 
-  webpackConfig.devtool = 'eval-cheap-module-source-map';
+  if (config.prod) {
+    webpackConfig.devtool = 'source-map';
+  } else {
+    webpackConfig.devtool = 'eval-cheap-module-source-map';
+  }
+
   webpackConfig.plugins = [
     new webpack.HotModuleReplacementPlugin(),
   ];
+
+  if (config.prod) {
+    webpackConfig.plugins.unshift(
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': '"production"',
+          'ENABLE_REACT_ADDON_HOOKS': config.addon ? '"true"' : '"false"',
+        },
+      }));
+  }
 
   // Start a webpack-dev-server
   const compiler = webpack(webpackConfig);
@@ -56,6 +84,31 @@ gulp.task('build-prod-with-addon', (callback) => {
         'ENABLE_REACT_ADDON_HOOKS': '"true"',
       },
     }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      mangle: true,
+    }),
+  ];
+
+  // Start a webpack-dev-server
+  webpack(webpackConfig, (err, stats) => {
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+
+    gutil.log('[webpack]', stats.toString({
+      // output options
+    }));
+
+    callback();
+  });
+});
+
+
+gulp.task('build-dev', (callback) => {
+  webpackConfig.plugins = [
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
