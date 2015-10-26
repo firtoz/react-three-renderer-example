@@ -197,11 +197,11 @@ class MouseInput extends Module {
   };
 
   _createSyntheticMouseEvent(eventType, prototype) {
-    return new SyntheticMouseEvent(null, null, new MouseEvent(eventType, prototype), prototype.target);
+    return SyntheticMouseEvent.getPooled(null, null, new MouseEvent(eventType, prototype), prototype.target);
   }
 
   _intersectAndDispatch(callbackName, mouseEvent) {
-    const event = new SyntheticMouseEvent(null, null, mouseEvent, mouseEvent.target);
+    const event = SyntheticMouseEvent.getPooled(null, null, mouseEvent, mouseEvent.target);
 
     const intersections = this._getIntersections(tempVector2.set(event.clientX, event.clientY));
 
