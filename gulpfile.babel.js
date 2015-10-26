@@ -11,15 +11,26 @@ const cache = {};
 const config = {
   prod: false,
   addon: false,
+  noEval: false,
 };
 
-gulp.task('dev-server-prod', () => {
+// pretend it's prod ( still has sourcemaps )
+// slowest compilation
+gulp.task('webpack-dev-server-prod', () => {
   config.prod = true;
   config.addon = true;
 
   runSequence('webpack-dev-server');
 });
 
+// no eval, faster runtime, slower compilation
+gulp.task('webpack-dev-server-no-eval', () => {
+  config.noEval = true;
+
+  runSequence('webpack-dev-server');
+});
+
+// fast compilation, low runtime performance
 gulp.task('webpack-dev-server', (callback) => {
   void callback;
 
@@ -42,7 +53,11 @@ gulp.task('webpack-dev-server', (callback) => {
   if (config.prod) {
     webpackConfig.devtool = 'source-map';
   } else {
-    webpackConfig.devtool = 'eval-cheap-module-source-map';
+    if (config.noEval) {
+      webpackConfig.devtool = 'cheap-module-source-map';
+    } else {
+      webpackConfig.devtool = 'eval-cheap-module-source-map';
+    }
   }
 
   webpackConfig.plugins = [
@@ -56,6 +71,14 @@ gulp.task('webpack-dev-server', (callback) => {
           'NODE_ENV': '"production"',
           'ENABLE_REACT_ADDON_HOOKS': config.addon ? '"true"' : '"false"',
         },
+      }));
+
+    webpackConfig.plugins.push(
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+        },
+        mangle: true,
       }));
   }
 
@@ -75,6 +98,7 @@ gulp.task('webpack-dev-server', (callback) => {
   });
 });
 
+// only enable addon integration, everything else in prod settings
 gulp.task('build-prod-with-addon', (callback) => {
   webpackConfig.plugins = [
 
@@ -92,7 +116,6 @@ gulp.task('build-prod-with-addon', (callback) => {
     }),
   ];
 
-  // Start a webpack-dev-server
   webpack(webpackConfig, (err, stats) => {
     if (err) {
       throw new gutil.PluginError('webpack', err);
@@ -106,7 +129,7 @@ gulp.task('build-prod-with-addon', (callback) => {
   });
 });
 
-
+// build without production node env
 gulp.task('build-dev', (callback) => {
   webpackConfig.plugins = [
     new webpack.optimize.UglifyJsPlugin({
