@@ -14,6 +14,7 @@
   "author": "Firtina \"toxicFork\" Ozbalikci",
   "license": "MIT",
   "dependencies": {
+    "react-three-renderer": "0.0.2-alpha",
     "stats.js": "^1.0.0"
   },
   "devDependencies": {
@@ -33,5 +34,13 @@
     "run-sequence": "^1.1.4",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toxicFork/react-three-renderer-example.git"
+  },
+  "bugs": {
+    "url": "https://github.com/toxicFork/react-three-renderer-example/issues"
+  },
+  "homepage": "https://github.com/toxicFork/react-three-renderer-example#readme"
 }
