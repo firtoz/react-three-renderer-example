@@ -11,26 +11,32 @@ const examples = [
   {
     name: 'Simple',
     component: SimpleExample,
+    url: 'Simple/index',
   },
   {
     name: 'Cloth',
     component: ClothExample,
+    url: 'AnimationCloth/index',
   },
   {
     name: 'Camera',
     component: CameraExample,
+    url: 'WebGLCameraExample/index',
   },
   {
     name: 'Geometries',
     component: GeometriesExample,
+    url: 'Geometries/index',
   },
   {
     name: 'Geometry Shapes',
     component: GeometryShapesExample,
+    url: 'GeometryShapes/index',
   },
   {
     name: 'Draggable Cubes',
     component: DraggableCubes,
+    url: 'DraggableCubes/index',
   },
 ];
 
@@ -70,12 +76,25 @@ class ExampleBrowser extends React.Component {
       viewerHeight,
       } = this.state;
 
-    if (this.state.activeExample !== null) {
-      const ExampleComponent = examples[this.state.activeExample].component;
+    let sourceButton = null;
 
-      exampleContent = <ExampleComponent
+    if (this.state.activeExample !== null) {
+      const {
+        component: ExampleComponent,
+        url,
+        } = examples[this.state.activeExample];
+
+      exampleContent = (<ExampleComponent
         width={viewerWidth}
-        height={viewerHeight}/>;
+        height={viewerHeight}/>);
+
+      sourceButton = (<div key="src" id="button">
+        <a
+          href={`https://github.com/toxicFork/react-three-renderer-example/blob/master/src/examples/${url}.js`}
+          target="_blank">
+          View source
+        </a>
+      </div>);
     }
 
     return (<div>
@@ -102,6 +121,7 @@ class ExampleBrowser extends React.Component {
       </div>
       <div id="viewer" ref="viewer">
         {exampleContent}
+        {sourceButton}
       </div>
     </div>);
   }
