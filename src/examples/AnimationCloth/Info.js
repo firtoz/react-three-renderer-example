@@ -56,7 +56,7 @@ class Info extends React.Component {
         style={{width: 40}}
         min="0"/> </span>
       <br/>
-      <span>Note: add some delay between frames if you would like to inspect the scene through React/Addons, because updating every frame kills the addon.</span>
+      <span>Note: add some time between frames (e.g. 60ms) if you would like to inspect the scene through react devtools, because updating every frame kills the addon.</span>
     </div>);
   }
 }
