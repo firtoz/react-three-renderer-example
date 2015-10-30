@@ -14,7 +14,7 @@
   "author": "Firtina \"toxicFork\" Ozbalikci",
   "license": "MIT",
   "dependencies": {
-    "react-three-renderer": "0.0.2-alpha",
+    "react-three-renderer": "0.0.4-alpha",
     "stats.js": "^1.0.0"
   },
   "devDependencies": {
