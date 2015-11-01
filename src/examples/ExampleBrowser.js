@@ -38,6 +38,11 @@ const examples = [
     component: DraggableCubes,
     url: 'DraggableCubes/index',
   },
+  {
+    name: 'Advanced',
+    advanced: true,
+    page: 'advanced.html',
+  },
 ];
 
 class ExampleBrowser extends React.Component {
@@ -104,6 +109,11 @@ class ExampleBrowser extends React.Component {
           <div>
             <h2>webgl</h2>
             {examples.map((example, index) => {
+              if (example.advanced) {
+                return (<div className="link" key={index}>
+                  <a href={example.page}>{example.name}</a>
+                </div>);
+              }
               return (<div className="link" key={index} onClick={() => {
                 const viewer = this.refs.viewer;
 

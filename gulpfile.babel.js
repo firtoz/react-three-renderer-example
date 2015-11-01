@@ -44,6 +44,11 @@ gulp.task('webpack-dev-server', (callback) => {
     'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
   ].concat(webpackConfig.entry.app);
 
+  webpackConfig.entry.advanced = [
+    `webpack-dev-server/client?http://${host}:${port}`, // WebpackDevServer host and port
+    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+  ].concat(webpackConfig.entry.advanced);
+
   webpackConfig.module.loaders.unshift({
     test: /\.js$/,
     loaders: ['react-hot'],

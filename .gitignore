@@ -3,3 +3,4 @@ build/js/bundle.js
 .idea/dictionaries/
 /dist/
 .idea/uiDesigner.xml
+build/js/

@@ -8,10 +8,13 @@ export default {
     app: [
       './src/index.js',
     ],
+    advanced: [
+      './src/examples/AdvancedExample/index.js',
+    ],
   },
   output: {
     path: outPath,
-    filename: path.join('js', 'bundle.js'),
+    filename: path.join('js', 'bundle-[name].js'),
   },
   'module': {
     'loaders': [
@@ -43,6 +46,7 @@ export default {
         'NODE_ENV': '"production"',
       },
     }),
+    new webpack.optimize.CommonsChunkPlugin(path.join('js', 'bundle-commons.js'), ['app', 'advanced']),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
