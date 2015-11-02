@@ -10,6 +10,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/build" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/assets" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/build/js" />
       <excludeFolder url="file://$MODULE_DIR$/pages" />
     </content>
