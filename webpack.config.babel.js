@@ -34,7 +34,7 @@ export default {
     },
   },
   devServer: {
-    contentBase: outPath,
+    contentBase: path.join(__dirname, 'assets'),
     // noInfo: true, //  --no-info option
     hot: true,
     inline: true,

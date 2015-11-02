@@ -33,76 +33,75 @@ gulp.task('webpack-dev-server-no-eval', () => {
 
 // fast compilation, low runtime performance
 gulp.task('webpack-dev-server', (callback) => {
-  runSequence('clean-pages', 'copy-assets', () => {
-    void callback;
+  void callback;
 
-    const host = '0.0.0.0';
-    const port = 8080;
+  const host = '0.0.0.0';
+  const port = 8080;
 
-    webpackConfig.cache = cache;
+  webpackConfig.cache = cache;
 
-    webpackConfig.entry.app = [
-      `webpack-dev-server/client?http://${host}:${port}`, // WebpackDevServer host and port
-      'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-    ].concat(webpackConfig.entry.app);
+  webpackConfig.entry.app = [
+    `webpack-dev-server/client?http://${host}:${port}`, // WebpackDevServer host and port
+    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+  ].concat(webpackConfig.entry.app);
 
-    webpackConfig.entry.advanced = [
-      `webpack-dev-server/client?http://${host}:${port}`, // WebpackDevServer host and port
-      'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
-    ].concat(webpackConfig.entry.advanced);
+  webpackConfig.entry.advanced = [
+    `webpack-dev-server/client?http://${host}:${port}`, // WebpackDevServer host and port
+    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
+  ].concat(webpackConfig.entry.advanced);
 
-    webpackConfig.module.loaders.unshift({
-      test: /\.js$/,
-      loaders: ['react-hot'],
-      include: path.join(__dirname, 'src'),
-    });
+  webpackConfig.module.loaders.unshift({
+    test: /\.js$/,
+    loaders: ['react-hot'],
+    include: path.join(__dirname, 'src'),
+  });
 
-    if (config.prod) {
-      webpackConfig.devtool = 'source-map';
+  if (config.prod) {
+    webpackConfig.devtool = 'source-map';
+  } else {
+    if (config.noEval) {
+      webpackConfig.devtool = 'cheap-module-source-map';
     } else {
-      if (config.noEval) {
-        webpackConfig.devtool = 'cheap-module-source-map';
-      } else {
-        webpackConfig.devtool = 'eval-cheap-module-source-map';
-      }
+      webpackConfig.devtool = 'eval-cheap-module-source-map';
+    }
+  }
+
+  webpackConfig.plugins = [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.optimize.CommonsChunkPlugin(path.join('js', 'bundle-commons.js'), ['app', 'advanced']),
+  ];
+
+  if (config.prod) {
+    webpackConfig.plugins.unshift(
+      new webpack.DefinePlugin({
+        'process.env': {
+          'NODE_ENV': '"production"',
+          'ENABLE_REACT_ADDON_HOOKS': config.addon ? '"true"' : '"false"',
+        },
+      }));
+
+    webpackConfig.plugins.push(
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+        },
+        mangle: true,
+      }));
+  }
+
+  // Start a webpack-dev-server
+  const compiler = webpack(webpackConfig);
+
+  new WebpackDevServer(compiler, webpackConfig.devServer).listen(port, host, (err) => {
+    if (err) {
+      throw new gutil.PluginError('webpack-dev-server', err);
     }
 
-    webpackConfig.plugins = [
-      new webpack.HotModuleReplacementPlugin(),
-    ];
+    // Server listening
+    gutil.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/index.html');
 
-    if (config.prod) {
-      webpackConfig.plugins.unshift(
-        new webpack.DefinePlugin({
-          'process.env': {
-            'NODE_ENV': '"production"',
-            'ENABLE_REACT_ADDON_HOOKS': config.addon ? '"true"' : '"false"',
-          },
-        }));
-
-      webpackConfig.plugins.push(
-        new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false,
-          },
-          mangle: true,
-        }));
-    }
-
-    // Start a webpack-dev-server
-    const compiler = webpack(webpackConfig);
-
-    new WebpackDevServer(compiler, webpackConfig.devServer).listen(port, host, (err) => {
-      if (err) {
-        throw new gutil.PluginError('webpack-dev-server', err);
-      }
-
-      // Server listening
-      gutil.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/index.html');
-
-      // keep the server alive or continue?
-      // callback();
-    });
+    // keep the server alive or continue?
+    // callback();
   });
 });
 
