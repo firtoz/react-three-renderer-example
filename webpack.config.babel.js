@@ -1,7 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 
-const outPath = path.join(__dirname, 'build');
+const outPath = path.join(__dirname, 'pages');
 
 export default {
   entry: {
