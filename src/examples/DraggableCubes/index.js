@@ -27,6 +27,11 @@ class DraggableCubes extends ExampleBase {
       dragging: false,
     };
 
+    this._cursor = {
+      hovering: false,
+      dragging: false,
+    };
+
     this.lightPosition = new THREE.Vector3(0, 500, 2000);
   }
 
@@ -182,6 +187,9 @@ class DraggableCubes extends ExampleBase {
       style.cursor = 'pointer';
     }
 
+    this._cursor.hovering = hovering;
+    this._cursor.dragging = dragging;
+
     return (<div
       ref="container"
       style={style}
@@ -257,8 +265,7 @@ class DraggableCubes extends ExampleBase {
             onDragStart={this._onDragStart}
             onDragEnd={this._onDragEnd}
 
-            hovering={hovering}
-            dragging={dragging}
+            cursor={this._cursor}
           />
         </scene>
       </React3>

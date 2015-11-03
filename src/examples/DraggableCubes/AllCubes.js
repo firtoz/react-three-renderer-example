@@ -19,8 +19,7 @@ class AllCubes extends React.Component {
     onDragStart: PropTypes.func.isRequired,
     onDragEnd: PropTypes.func.isRequired,
 
-    hovering: PropTypes.bool,
-    dragging: PropTypes.bool,
+    cursor: PropTypes.any,
   };
 
   constructor(props, context) {
@@ -119,8 +118,7 @@ class AllCubes extends React.Component {
       mouseInput,
       camera,
 
-      hovering,
-      dragging,
+      cursor,
       } = this.props;
 
     return (<group>
@@ -138,8 +136,7 @@ class AllCubes extends React.Component {
           onDragStart={this._onCubeDragStart}
           onDragEnd={this._onCubeDragEnd}
 
-          hovering={hovering}
-          dragging={dragging}
+          cursor={cursor}
         />);
       })}
     </group>);

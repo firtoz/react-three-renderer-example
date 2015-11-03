@@ -26,8 +26,7 @@ class DraggableCube extends React.Component {
     onDragStart: PropTypes.func.isRequired,
     onDragEnd: PropTypes.func.isRequired,
 
-    hovering: PropTypes.bool,
-    dragging: PropTypes.bool,
+    cursor: PropTypes.any,
   };
 
   constructor(props, context) {
@@ -174,7 +173,9 @@ class DraggableCube extends React.Component {
       } = this;
 
     const {
-      dragging,
+      cursor: {
+        dragging,
+        },
       } = this.props;
 
     const {
