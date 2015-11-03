@@ -5,7 +5,6 @@ import ReactUpdates from 'react/lib/ReactUpdates';
 import SyntheticMouseEvent from 'react/lib/SyntheticMouseEvent';
 
 import Module from 'react-three-renderer/lib/Module';
-import Object3DDescriptor from 'react-three-renderer/lib/descriptors/Object/Object3DDescriptor';
 
 import PropTypes from 'react/lib/ReactPropTypes';
 
@@ -38,12 +37,16 @@ class MouseInput extends Module {
     this._objectsToIntersect = null;
 
     this._restrictedIntersectionRecursive = false;
+
+    this._patchedDescriptors = [];
   }
 
   setup(react3RendererInstance) {
     super.setup(react3RendererInstance);
 
     this._react3RendererInstance = react3RendererInstance;
+
+    const Object3DDescriptor = react3RendererInstance.threeElementDescriptors.object3D.constructor;
 
     Object.values(react3RendererInstance.threeElementDescriptors).forEach(elementDescriptor => {
       if (elementDescriptor instanceof Object3DDescriptor) {
@@ -64,6 +67,8 @@ class MouseInput extends Module {
             default: boolProps[propName],
           });
         });
+
+        this._patchedDescriptors.push(elementDescriptor);
       }
     });
   }
@@ -342,7 +347,7 @@ class MouseInput extends Module {
     for (let i = 0; i < unseenUUIDs.length; ++i) {
       const uuid = unseenUUIDs[i];
 
-      if (!(mouseEnterEvent.isDefaultPrevented() || mouseEnterEvent.isPropagationStopped())) {
+      if (!(mouseLeaveEvent.isDefaultPrevented() || mouseLeaveEvent.isPropagationStopped())) {
         React3.eventDispatcher.dispatchEvent(this._hoverObjectMap[uuid].object, 'onMouseLeave', mouseLeaveEvent);
       }
 
@@ -374,12 +379,13 @@ class MouseInput extends Module {
 
     delete this._onMouseMove;
 
-    Object.values(this._react3RendererInstance.threeElementDescriptors).forEach(elementDescriptor => {
-      if (elementDescriptor instanceof Object3DDescriptor) {
-        Object.keys(boolProps).concat(mouseEvents).forEach(propName => {
-          elementDescriptor.removeProp(propName);
-        });
-      }
+    this._patchedDescriptors.forEach(elementDescriptor => {
+      const allProps = Object.keys(boolProps)
+        .concat(mouseEvents);
+
+      allProps.forEach(propName => {
+        elementDescriptor.removeProp(propName);
+      });
     });
   }
 }
