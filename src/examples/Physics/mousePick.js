@@ -115,7 +115,6 @@ class PhysicsMousePick extends ExampleBase {
       world.broadphase = new CANNON.NaiveBroadphase();
 
       const mass = 5;
-      // const radius = 1.3;
 
       const boxShape = new CANNON.Box(new CANNON.Vec3(0.25, 0.25, 0.25));
 
@@ -164,32 +163,10 @@ class PhysicsMousePick extends ExampleBase {
 
     initCannon();
 
-    // world.gravity.set(0, 0, 0);
-    // world.broadphase = new CANNON.NaiveBroadphase();
-    // world.solver.iterations = 10;
-    // const shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
-    // const mass = 1;
-    // const body = new CANNON.Body({
-    //   mass,
-    // });
-    // body.addShape(shape);
-    // body.angularVelocity.set(0, 10, 0);
-    // body.angularDamping = 0.5;
-    // world.addBody(body);
-    //
-    //
     const timeStep = 1 / 60;
-    //
     const updatePhysics = () => {
       // Step the physics world
       world.step(timeStep);
-      //   // Copy coordinates from Cannon.js to Three.js
-      //
-      //   this.setState({
-      //     // need to call new THREE.* in order to ensure an update goes through
-      //     meshPosition: new THREE.Vector3().copy(body.position),
-      //     meshQuaternion: new THREE.Quaternion().copy(body.quaternion),
-      //   });
     };
 
     const _getMeshStates = () => {
