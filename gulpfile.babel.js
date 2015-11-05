@@ -116,6 +116,26 @@ gulp.task('build-prod-with-addon', (callback) => {
   runSequence('build', callback);
 });
 
+// only enable addon integration, everything else in prod settings
+gulp.task('build-prod-with-addon-no-mangle', (callback) => {
+  webpackConfig.pluginsWithoutUglify.unshift(new webpack.DefinePlugin({
+    'process.env': {
+      'ENABLE_REACT_ADDON_HOOKS': '"true"',
+    },
+  }));
+
+  webpackConfig.plugins = webpackConfig.pluginsWithoutUglify.concat([
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+      },
+      mangle: false,
+    }),
+  ]);
+
+  runSequence('build', callback);
+});
+
 // build without production node env
 gulp.task('build-dev', (callback) => {
   webpackConfig.plugins = [

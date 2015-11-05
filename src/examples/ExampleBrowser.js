@@ -6,6 +6,8 @@ import GeometriesExample from './Geometries/index';
 import CameraExample from './WebGLCameraExample/index';
 import GeometryShapesExample from './GeometryShapes/index';
 import DraggableCubes from './DraggableCubes/index';
+import Physics from './Physics/index';
+import PhysicsMousePick from './Physics/mousePick';
 
 const examples = [
   {
@@ -42,6 +44,16 @@ const examples = [
     name: 'Advanced',
     advanced: true,
     page: 'advanced.html',
+  },
+  {
+    name: 'Physics',
+    component: Physics,
+    url: 'Physics/index',
+  },
+  {
+    name: 'PhysicsMousePick',
+    component: PhysicsMousePick,
+    url: 'Physics/mousePick',
   },
 ];
 
