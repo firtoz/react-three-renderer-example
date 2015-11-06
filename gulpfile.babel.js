@@ -15,6 +15,18 @@ const config = {
   noEval: false,
 };
 
+webpackConfig.output.devtoolModuleFilenameTemplate = (info) => {
+  return `wp:///${path.relative(__dirname, info.resourcePath)}`;
+};
+
+webpackConfig.output.devtoolFallbackModuleFilenameTemplate = (info) => {
+  return `wp:///${path.relative(__dirname, info.resourcePath)}?${info.hash}`;
+};
+
+require('webpack/lib/ModuleFilenameHelpers').createFooter = () => {
+  return '';
+};
+
 // pretend it's prod ( still has sourcemaps )
 // slowest compilation
 gulp.task('webpack-dev-server-prod', () => {
@@ -116,13 +128,9 @@ gulp.task('build-prod-with-addon', (callback) => {
   runSequence('build', callback);
 });
 
-// only enable addon integration, everything else in prod settings
+// also adds sourceMaps too!
 gulp.task('build-prod-with-addon-no-mangle', (callback) => {
-  webpackConfig.pluginsWithoutUglify.unshift(new webpack.DefinePlugin({
-    'process.env': {
-      'ENABLE_REACT_ADDON_HOOKS': '"true"',
-    },
-  }));
+  webpackConfig.devtool = 'source-map';
 
   webpackConfig.plugins = webpackConfig.pluginsWithoutUglify.concat([
     new webpack.optimize.UglifyJsPlugin({
@@ -133,7 +141,7 @@ gulp.task('build-prod-with-addon-no-mangle', (callback) => {
     }),
   ]);
 
-  runSequence('build', callback);
+  runSequence('build-prod-with-addon', callback);
 });
 
 // build without production node env

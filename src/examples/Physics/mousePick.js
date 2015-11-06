@@ -9,74 +9,7 @@ import ExampleBase from '../ExampleBase';
 
 import Stats from 'stats.js';
 
-const {PropTypes} = React;
-
-class PickableMesh extends React.Component {
-  static propTypes = {
-    position: PropTypes.instanceOf(THREE.Vector3).isRequired,
-    quaternion: PropTypes.instanceOf(THREE.Quaternion).isRequired,
-    meshes: PropTypes.arrayOf(PropTypes.instanceOf(THREE.Mesh)).isRequired,
-    bodyIndex: PropTypes.number.isRequired,
-
-    onMouseDown: PropTypes.func.isRequired,
-  };
-
-  componentDidMount() {
-    const {
-      mesh,
-      } = this.refs;
-
-    const {
-      bodyIndex,
-      meshes,
-      } = this.props;
-
-    mesh.userData._bodyIndex = bodyIndex;
-
-    meshes.push(mesh);
-  }
-
-  componentWillUnmount() {
-    const {
-      mesh,
-      } = this.refs;
-
-    const {
-      meshes,
-      } = this.props;
-
-    meshes.splice(meshes.indexOf(mesh), 1);
-  }
-
-  _onMouseDown = (event, intersection) => {
-    event.preventDefault();
-
-    this.props.onMouseDown(this.refs.mesh.userData._bodyIndex, intersection);
-  };
-
-  render() {
-    const {
-      position,
-      quaternion,
-      } = this.props;
-
-    return (<mesh
-      position={position}
-      quaternion={quaternion}
-
-      ref="mesh"
-
-      onMouseDown={this._onMouseDown}
-    >
-      <geometryResource
-        resourceId="cubeGeo"
-      />
-      <materialResource
-        resourceId="cubeMaterial"
-      />
-    </mesh>);
-  }
-}
+import PickableMesh from './mousePick/PickableMesh';
 
 const backVector = new THREE.Vector3(0, 0, -1);
 const dragPlane = new THREE.Plane();
@@ -124,7 +57,7 @@ class PhysicsMousePick extends ExampleBase {
         });
 
         boxBody.addShape(boxShape);
-        boxBody.position.set(0, 5, i * 0.6);
+        boxBody.position.set(-2.5 + Math.random() * 5, 2.5 + Math.random() * 5, -2.5 + Math.random() * 5);
         world.addBody(boxBody);
         bodies.push(boxBody);
 
@@ -194,7 +127,7 @@ class PhysicsMousePick extends ExampleBase {
       constrainedBody = bodies[bodyIndex];
       // Vector to the clicked point, relative to the body
       const v1 = new CANNON.Vec3(x, y, z).vsub(constrainedBody.position);
-      // Apply anti-quaternion to vector to tranform it into the local body coordinate system
+      // Apply anti-quaternion to vector to transform it into the local body coordinate system
       const antiRot = constrainedBody.quaternion.inverse();
       pivot = antiRot.vmult(v1); // pivot is not in local body coordinates
       // Move the cannon click marker particle to the click position
@@ -202,7 +135,7 @@ class PhysicsMousePick extends ExampleBase {
       // Create a new constraint
       // The pivot for the jointBody is zero
       this.mouseConstraint = new CANNON.PointToPointConstraint(constrainedBody, pivot, this.jointBody, new CANNON.Vec3(0, 0, 0));
-      // Add the constriant to world
+      // Add the t to world
       world.addConstraint(this.mouseConstraint);
 
       this.world = world;
@@ -216,33 +149,6 @@ class PhysicsMousePick extends ExampleBase {
     };
 
     this.meshes = [];
-  }
-
-  _onWindowMouseMove = () => {
-
-  };
-
-  _getRayCasterFromScreenCoord(screenX, screenY, camera, raycaster) {
-    const mouse3D = new THREE.Vector3();
-    // Get 3D point form the client x y
-    mouse3D.x = (screenX / window.innerWidth) * 2 - 1;
-    mouse3D.y = -(screenY / window.innerHeight) * 2 + 1;
-    mouse3D.z = 0.5;
-
-    return raycaster.setFromCamera(mouse3D, camera);
-  }
-
-  _findNearestIntersectingObject(clientX, clientY, camera, objects) {
-    // Get the picking ray from the point
-    this._getRayCasterFromScreenCoord(clientX, clientY, camera, this._raycaster);
-    // Find the closest intersecting object
-    // Now, cast the ray all render objects in the scene to see if they collide. Take the closest one.
-    const hits = this._raycaster.intersectObjects(objects);
-    let closest = null;
-    if (hits.length > 0) {
-      closest = hits[0];
-    }
-    return closest;
   }
 
   _setClickMarker(x, y, z) {
@@ -268,7 +174,6 @@ class PhysicsMousePick extends ExampleBase {
     if (!mouseInput.isReady()) {
       const {
         scene,
-        container,
         camera,
         } = this.refs;
 
@@ -301,7 +206,6 @@ class PhysicsMousePick extends ExampleBase {
   _onMeshMouseDown = (bodyIndex, intersection) => {
     const {
       camera,
-      mouseInput,
       } = this.refs;
 
     const pos = intersection.point;
@@ -329,7 +233,7 @@ class PhysicsMousePick extends ExampleBase {
 
     this.world.removeConstraint(this.mouseConstraint);
     this.mouseConstraint = false;
-  }
+  };
 
   _onMouseMove = (event) => {
     const {
@@ -371,8 +275,8 @@ class PhysicsMousePick extends ExampleBase {
 
     const d = 20;
 
-    const cubeMeshes = meshStates.map(({position, quaternion, ref}, i) => {
-      return <PickableMesh
+    const cubeMeshes = meshStates.map(({position, quaternion}, i) => {
+      return (<PickableMesh
         key={i}
 
         position={position}
@@ -383,7 +287,7 @@ class PhysicsMousePick extends ExampleBase {
         meshes={this.meshes}
 
         onMouseDown={this._onMeshMouseDown}
-      />;
+      />);
     });
 
     return (<div
