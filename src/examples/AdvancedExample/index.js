@@ -65,7 +65,7 @@ function animate() {
         />
       </mesh>
     </scene>
-  </react3>);
+  </react3>, canvas);
 
   requestAnimationFrame(animate);
 }
