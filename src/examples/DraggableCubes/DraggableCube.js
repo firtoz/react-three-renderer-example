@@ -130,10 +130,6 @@ class DraggableCube extends React.Component {
   _onDocumentMouseUp = (event) => {
     event.preventDefault();
 
-    this.setState({
-      pressed: false,
-    });
-
     document.removeEventListener('mouseup', this._onDocumentMouseUp);
     document.removeEventListener('mousemove', this._onDocumentMouseMove);
 
@@ -142,6 +138,10 @@ class DraggableCube extends React.Component {
       } = this.props;
 
     onDragEnd();
+
+    this.setState({
+      pressed: false,
+    });
   };
 
   _onMouseLeave = () => {
