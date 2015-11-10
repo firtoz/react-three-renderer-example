@@ -58,6 +58,8 @@ class PickableMesh extends React.Component {
 
       ref="mesh"
 
+      castShadow
+
       onMouseDown={this._onMouseDown}
     >
       <geometryResource
