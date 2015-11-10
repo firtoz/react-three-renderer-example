@@ -30,8 +30,6 @@ function animate() {
   );
 
   react3Renderer.render(<react3
-    canvas={canvas}
-
     width={width}
     height={height}
 
