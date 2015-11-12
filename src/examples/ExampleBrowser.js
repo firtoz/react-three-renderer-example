@@ -8,6 +8,8 @@ import GeometryShapesExample from './GeometryShapes/index';
 import DraggableCubes from './DraggableCubes/index';
 import Physics from './Physics/index';
 import PhysicsMousePick from './Physics/mousePick';
+import BenchmarkRotatingCubes from './Benchmark/RotatingCubes';
+import RotatingCubesDirectUpdates from './Benchmark/RotatingCubesDirectUpdates';
 
 const examples = [
   {
@@ -51,9 +53,19 @@ const examples = [
     url: 'Physics/index',
   },
   {
-    name: 'PhysicsMousePick',
+    name: 'Physics - MousePick',
     component: PhysicsMousePick,
     url: 'Physics/mousePick',
+  },
+  {
+    name: 'Benchmark - RotatingCubes - Through React',
+    component: BenchmarkRotatingCubes,
+    url: 'Benchmark/RotatingCubes',
+  },
+  {
+    name: 'Benchmark - RotatingCubes - Direct Updates',
+    component: RotatingCubesDirectUpdates,
+    url: 'Benchmark/RotatingCubesDirectUpdates',
   },
 ];
 
