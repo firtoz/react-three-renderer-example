@@ -26,6 +26,10 @@ class Physics extends ExampleBase {
     body.angularDamping = 0.5;
     world.addBody(body);
 
+    this._onMouseDown = () => {
+      body.angularVelocity.y += 5;
+    };
+
     this.cameraPosition = new THREE.Vector3(0, 0, 5);
 
     const timeStep = 1 / 60;
@@ -86,6 +90,8 @@ class Physics extends ExampleBase {
 
     return (<div
       ref="container"
+
+      onMouseDown={this._onMouseDown}
     ><React3
       antialias
       mainCamera="camera"
@@ -115,6 +121,7 @@ class Physics extends ExampleBase {
           />
           <meshBasicMaterial
             color={0x00ff00}
+            wireframe
           />
         </mesh>
       </scene>

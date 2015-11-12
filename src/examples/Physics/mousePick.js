@@ -18,11 +18,11 @@ class PhysicsMousePick extends ExampleBase {
   constructor(props, context) {
     super(props, context);
 
-    const N = 10;
+    const N = 100;
 
     this._raycaster = new THREE.Raycaster();
 
-    this.fog = new THREE.Fog(0x000000, 500, 10000);
+    this.fog = new THREE.Fog(0x001525, 10, 40);
 
     const d = 20;
 
