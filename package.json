@@ -17,7 +17,7 @@
     "cannon": "^0.6.2",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
-    "react-three-renderer": "0.0.12-alpha",
+    "react-three-renderer": "0.0.14-alpha",
     "stats.js": "^1.0.0",
     "three.js": "^0.73.0"
   },
