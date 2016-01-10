@@ -80,15 +80,16 @@ gulp.task('webpack-dev-server', (callback) => {
 
   webpackConfig.plugins = [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.CommonsChunkPlugin(path.join('js', 'bundle-commons.js'), ['app', 'advanced']),
+    new webpack.optimize.CommonsChunkPlugin(
+      path.join('js', 'bundle-commons.js'), ['app', 'advanced']),
   ];
 
   if (config.prod) {
     webpackConfig.plugins.unshift(
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': '"production"',
-          'ENABLE_REACT_ADDON_HOOKS': config.addon ? '"true"' : '"false"',
+          NODE_ENV: '"production"',
+          ENABLE_REACT_ADDON_HOOKS: config.addon ? '"true"' : '"false"',
         },
       }));
 
@@ -121,7 +122,7 @@ gulp.task('webpack-dev-server', (callback) => {
 gulp.task('build-prod-with-addon', (callback) => {
   webpackConfig.plugins.unshift(new webpack.DefinePlugin({
     'process.env': {
-      'ENABLE_REACT_ADDON_HOOKS': '"true"',
+      ENABLE_REACT_ADDON_HOOKS: '"true"',
     },
   }));
 
