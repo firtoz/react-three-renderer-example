@@ -1,5 +1,5 @@
 import React3 from 'react-three-renderer';
-import THREE from 'three.js';
+import THREE from 'three';
 import ReactUpdates from 'react/lib/ReactUpdates';
 
 import SyntheticMouseEvent from 'react/lib/SyntheticMouseEvent';

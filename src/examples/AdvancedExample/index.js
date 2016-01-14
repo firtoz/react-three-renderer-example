@@ -2,7 +2,7 @@
 
 import React from 'react';
 import React3Renderer from 'react-three-renderer/lib/React3Renderer';
-import THREE from 'three.js';
+import THREE from 'three';
 
 // ^ Look mom, no react-dom!
 

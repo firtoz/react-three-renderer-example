@@ -1,5 +1,5 @@
 import React from 'react';
-import THREE from 'three.js';
+import THREE from 'three';
 
 class PointCloud extends React.Component {
   shouldComponentUpdate() {
