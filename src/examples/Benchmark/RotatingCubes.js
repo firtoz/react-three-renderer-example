@@ -257,7 +257,6 @@ class RotatingCubes extends ExampleBase {
 
             shadowCameraFar={3 * d}
             shadowCameraNear={d}
-            shadowDarkness={0.5}
 
             position={this.lightPosition}
           />
