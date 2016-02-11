@@ -41,10 +41,9 @@ class MouseInput extends Module {
     this._patchedDescriptors = [];
   }
 
+  // noinspection JSUnusedGlobalSymbols
   setup(react3RendererInstance) {
     super.setup(react3RendererInstance);
-
-    this._react3RendererInstance = react3RendererInstance;
 
     const Object3DDescriptor = react3RendererInstance.threeElementDescriptors.object3D.constructor;
 
@@ -121,14 +120,14 @@ class MouseInput extends Module {
 
       const listenerCallbackName = listenerCallbackNames[eventName];
       switch (eventName) {
-      case 'mousedown':
-        boundListener = this._onMouseDown.bind(this, listenerCallbackName);
-        break;
-      case 'mouseup':
-        boundListener = this._onMouseUp.bind(this, listenerCallbackName);
-        break;
-      default:
-        break;
+        case 'mousedown':
+          boundListener = this._onMouseDown.bind(this, listenerCallbackName);
+          break;
+        case 'mouseup':
+          boundListener = this._onMouseUp.bind(this, listenerCallbackName);
+          break;
+        default:
+          break;
       }
 
       if (boundListener) {
@@ -146,7 +145,7 @@ class MouseInput extends Module {
       const {
         event,
         intersections,
-        } = this._intersectAndDispatch(callbackName, mouseEvent);
+      } = this._intersectAndDispatch(callbackName, mouseEvent);
 
       if (event.isDefaultPrevented() || event.isPropagationStopped()) {
         this._intersectionsForClick = null;
@@ -161,7 +160,7 @@ class MouseInput extends Module {
       const {
         event,
         intersections,
-        } = this._intersectAndDispatch(callbackName, mouseEvent);
+      } = this._intersectAndDispatch(callbackName, mouseEvent);
 
       if (!(event.isDefaultPrevented() || event.isPropagationStopped())) {
         if (this._intersectionsForClick === null) {
@@ -192,7 +191,9 @@ class MouseInput extends Module {
           if (intersectionUUIDMap[uuid]) {
             // oh boy oh boy here we go, we got a clicker
 
-            React3.eventDispatcher.dispatchEvent(object, 'onClick', this._createSyntheticMouseEvent('click', event), intersection);
+            React3.eventDispatcher
+              .dispatchEvent(object, 'onClick',
+                this._createSyntheticMouseEvent('click', event), intersection);
           }
         }
       }
@@ -202,7 +203,8 @@ class MouseInput extends Module {
   };
 
   _createSyntheticMouseEvent(eventType, prototype) {
-    return SyntheticMouseEvent.getPooled(null, null, new MouseEvent(eventType, prototype), prototype.target);
+    return SyntheticMouseEvent.getPooled(null, null,
+      new MouseEvent(eventType, prototype), prototype.target);
   }
 
   _intersectAndDispatch(callbackName, mouseEvent) {
@@ -236,7 +238,8 @@ class MouseInput extends Module {
     this._raycaster.setFromCamera(relativeMouseCoords, this._camera);
 
     if (this._restrictIntersections) {
-      return this._raycaster.intersectObjects(this._objectsToIntersect, this._restrictedIntersectionRecursive);
+      return this._raycaster.intersectObjects(this._objectsToIntersect,
+        this._restrictedIntersectionRecursive);
     }
 
     return this._raycaster.intersectObject(this._scene, true);
@@ -327,7 +330,8 @@ class MouseInput extends Module {
         };
 
         if (!(mouseEnterEvent.isDefaultPrevented() || mouseEnterEvent.isPropagationStopped())) {
-          React3.eventDispatcher.dispatchEvent(object, 'onMouseEnter', mouseEnterEvent, intersection, depth);
+          React3.eventDispatcher.dispatchEvent(object, 'onMouseEnter',
+            mouseEnterEvent, intersection, depth);
         }
       }
 
@@ -348,7 +352,8 @@ class MouseInput extends Module {
       const uuid = unseenUUIDs[i];
 
       if (!(mouseLeaveEvent.isDefaultPrevented() || mouseLeaveEvent.isPropagationStopped())) {
-        React3.eventDispatcher.dispatchEvent(this._hoverObjectMap[uuid].object, 'onMouseLeave', mouseLeaveEvent);
+        React3.eventDispatcher.dispatchEvent(this._hoverObjectMap[uuid].object,
+          'onMouseLeave', mouseLeaveEvent);
       }
 
       delete this._hoverObjectMap[uuid];
@@ -371,6 +376,7 @@ class MouseInput extends Module {
     return relativeMouseCoords;
   }
 
+  // noinspection JSUnusedGlobalSymbols
   dispose() {
     document.removeEventListener('mousemove', this._onMouseMove, false);
 

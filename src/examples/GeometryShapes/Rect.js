@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'react/lib/ReactPropTypes';
-import PureComponentMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 
 function Rect(props) {
   const {
     width,
     length,
     resourceId,
-    } = props;
+  } = props;
 
   return (<shape resourceId={resourceId}>
     <moveTo

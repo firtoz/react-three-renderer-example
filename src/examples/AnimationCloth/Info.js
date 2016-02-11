@@ -1,6 +1,6 @@
 import React from 'react';
 
-const {PropTypes} = React;
+const { PropTypes } = React;
 
 class Info extends React.Component {
   static propTypes = {
@@ -31,19 +31,24 @@ class Info extends React.Component {
       rotating,
       winding,
       balling,
-      } = this.props;
+    } = this.props;
 
-    return (<div style={{
-      textAlign: 'center',
-      padding: 10,
-      zIndex: 10,
-      width: '100%',
-      position: 'absolute',
-      color: '#000',
-    }}>
-      <a href="http://threejs.org" style={{
-        color: '#0080ff',
-      }}>three.js</a> - Simple Cloth Simulation<br/>
+    return (<div
+      style={{
+        textAlign: 'center',
+        padding: 10,
+        zIndex: 10,
+        width: '100%',
+        position: 'absolute',
+        color: '#000',
+      }}
+    >
+      <a
+        href="http://threejs.org"
+        style={{
+          color: '#0080ff',
+        }}
+      >three.js</a> - Simple Cloth Simulation<br/>
       Verlet integration with Constrains relaxation<br/>
       Toggle: <a onClick={toggleRotate} style={linkStyle}>Camera{rotating ? '*' : null}</a> |
       <span> <a onClick={toggleWind} style={linkStyle}>Wind{winding ? '*' : null}</a></span> |
@@ -53,10 +58,13 @@ class Info extends React.Component {
         onChange={onFrameChange}
         value={minTimePerFrame}
         type="number"
-        style={{width: 40}}
-        min="0"/> </span>
+        style={{ width: 40 }}
+        min="0"
+      /> </span>
       <br/>
-      <span>Note: add some time between frames (e.g. 60ms) if you would like to inspect the scene through react devtools, because updating every frame kills the addon.</span>
+      <span>Note: add some time between frames (e.g. 60ms)
+        if you would like to inspect the scene through
+        react devtools, because updating every frame kills the addon.</span>
     </div>);
   }
 }

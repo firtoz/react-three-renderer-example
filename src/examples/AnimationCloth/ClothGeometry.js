@@ -1,6 +1,6 @@
 import React from 'react';
 
-const {PropTypes} = React;
+const { PropTypes } = React;
 
 import Cloth from './Cloth';
 
@@ -22,7 +22,7 @@ class ClothGeometry extends React.Component {
   render() {
     const {
       cloth,
-      } = this.props;
+    } = this.props;
 
     return (<parametricGeometry
       ref={'geometry'}

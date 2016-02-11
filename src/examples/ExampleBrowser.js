@@ -103,7 +103,7 @@ class ExampleBrowser extends React.Component {
     const {
       viewerWidth,
       viewerHeight,
-      } = this.state;
+    } = this.state;
 
     let sourceButton = null;
 
@@ -111,16 +111,18 @@ class ExampleBrowser extends React.Component {
       const {
         component: ExampleComponent,
         url,
-        } = examples[this.state.activeExample];
+      } = examples[this.state.activeExample];
 
       exampleContent = (<ExampleComponent
         width={viewerWidth}
-        height={viewerHeight}/>);
+        height={viewerHeight}
+      />);
 
       sourceButton = (<div key="src" id="button">
         <a
           href={`https://github.com/toxicFork/react-three-renderer-example/blob/master/src/examples/${url}.js`}
-          target="_blank">
+          target="_blank"
+        >
           View source
         </a>
       </div>);
@@ -138,7 +140,8 @@ class ExampleBrowser extends React.Component {
                   <a href={example.page}>{example.name}</a>
                 </div>);
               }
-              return (<div className="link" key={index} onClick={() => {
+
+              const onLinkClick = () => {
                 const viewer = this.refs.viewer;
 
                 this.setState({
@@ -146,7 +149,13 @@ class ExampleBrowser extends React.Component {
                   viewerHeight: viewer.offsetHeight,
                   activeExample: index,
                 });
-              }}>
+              };
+
+              return (<div
+                className="link"
+                key={index}
+                onClick={onLinkClick}
+              >
                 {example.name}
               </div>);
             })}

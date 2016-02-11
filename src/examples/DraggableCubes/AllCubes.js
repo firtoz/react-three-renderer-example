@@ -4,7 +4,7 @@ import THREE from 'three';
 
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 
-const {PropTypes} = React;
+const { PropTypes } = React;
 
 import MouseInput from '../inputs/MouseInput';
 
@@ -42,10 +42,6 @@ class AllCubes extends React.Component {
 
     this.cubePositions = cubePositions;
 
-    this.mouse = new THREE.Vector2();
-    this.offset = new THREE.Vector3();
-    this.selected = null;
-
     this._hoveredCubes = 0;
     this._draggingCubes = 0;
   }
@@ -53,7 +49,7 @@ class AllCubes extends React.Component {
   componentDidMount() {
     const {
       onCubesMounted,
-      } = this.props;
+    } = this.props;
 
     onCubesMounted(this.cubes);
   }
@@ -68,7 +64,7 @@ class AllCubes extends React.Component {
     if (this._hoveredCubes === 0) {
       const {
         onHoverStart,
-        } = this.props;
+      } = this.props;
 
       onHoverStart();
     }
@@ -82,7 +78,7 @@ class AllCubes extends React.Component {
     if (this._hoveredCubes === 0) {
       const {
         onHoverEnd,
-        } = this.props;
+      } = this.props;
 
       onHoverEnd();
     }
@@ -92,7 +88,7 @@ class AllCubes extends React.Component {
     if (this._draggingCubes === 0) {
       const {
         onDragStart,
-        } = this.props;
+      } = this.props;
 
       onDragStart();
     }
@@ -106,7 +102,7 @@ class AllCubes extends React.Component {
     if (this._draggingCubes === 0) {
       const {
         onDragEnd,
-        } = this.props;
+      } = this.props;
 
       onDragEnd();
     }
@@ -119,10 +115,11 @@ class AllCubes extends React.Component {
       camera,
 
       cursor,
-      } = this.props;
+    } = this.props;
 
     return (<group>
       {this.cubePositions.map((cubePosition, index) => {
+        const onCreate = this._onCubeCreate.bind(this, index);
         return (<DraggableCube
           key={index}
 
@@ -130,7 +127,7 @@ class AllCubes extends React.Component {
           camera={camera}
 
           initialPosition={cubePosition}
-          onCreate={this._onCubeCreate.bind(this, index)}
+          onCreate={onCreate}
           onMouseEnter={this._onCubeMouseEnter}
           onMouseLeave={this._onCubeMouseLeave}
           onDragStart={this._onCubeDragStart}

@@ -40,7 +40,9 @@ class WebGLCameraExample extends ExampleBase {
   componentDidMount() {
     document.addEventListener('keydown', this._onKeyDown, false);
 
-    const controls = new TrackballControls(this.refs.mainCamera, ReactDOM.findDOMNode(this.refs.react3));
+    const controls = new TrackballControls(this.refs.mainCamera,
+      ReactDOM.findDOMNode(this.refs.react3));
+
     controls.rotateSpeed = 1.0;
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.8;
@@ -69,19 +71,19 @@ class WebGLCameraExample extends ExampleBase {
 
   _onKeyDown = (event) => {
     switch (event.keyCode) {
-    default:
-      break;
-    case 79: // O
-      this.setState({
-        activeCameraName: orthographicCameraName,
-      });
-      break;
-    case 80: // P
-      this.setState({
-        activeCameraName: perspectiveCameraName,
-      });
+      default:
+        break;
+      case 79: // O
+        this.setState({
+          activeCameraName: orthographicCameraName,
+        });
+        break;
+      case 80: // P
+        this.setState({
+          activeCameraName: perspectiveCameraName,
+        });
 
-      break;
+        break;
     }
   };
 
@@ -101,37 +103,41 @@ class WebGLCameraExample extends ExampleBase {
     });
   };
 
+  _pause = () => {
+    this.setState({
+      paused: !this.state.paused,
+    });
+  };
+
+  _frame = () => {
+    this.setState({
+      paused: false,
+    }, () => {
+      this._onAnimate();
+      this.setState({
+        paused: true,
+      });
+    });
+  };
+
   render() {
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     const {
       meshPosition,
       childPosition,
       r,
-      } = this.state;
+    } = this.state;
 
     const aspectRatio = 0.5 * width / height;
 
     return (<div>
       <Info
-        pause={() => {
-          this.setState({
-            paused: !this.state.paused,
-          });
-        }}
-        frame={() => {
-          this.setState({
-            paused: false,
-          }, () => {
-            this._onAnimate();
-            this.setState({
-              paused: true,
-            });
-          });
-        }}
+        pause={this._pause}
+        frame={this._frame}
       />
       <React3
         ref="react3"
@@ -145,13 +151,15 @@ class WebGLCameraExample extends ExampleBase {
           y={0}
           width={width / 2}
           height={height}
-          cameraName={this.state.activeCameraName}/>
+          cameraName={this.state.activeCameraName}
+        />
         <viewport
           x={width / 2}
           y={0}
           width={width / 2}
           height={height}
-          cameraName={mainCameraName}/>
+          cameraName={mainCameraName}
+        />
         <scene>
           <perspectiveCamera
             ref="mainCamera"
@@ -160,16 +168,19 @@ class WebGLCameraExample extends ExampleBase {
             aspect={aspectRatio}
             near={1}
             far={10000}
-            position={this.state.mainCameraPosition}/>
+            position={this.state.mainCameraPosition}
+          />
           <object3D
-            lookAt={meshPosition}>
+            lookAt={meshPosition}
+          >
             <perspectiveCamera
               name={perspectiveCameraName}
-              fov={35 + 30 * Math.sin( 0.5 * r )}
+              fov={35 + 30 * Math.sin(0.5 * r)}
               aspect={aspectRatio}
               near={150}
               far={meshPosition.length()}
-              rotation={perspectiveCameraRotation}/>
+              rotation={perspectiveCameraRotation}
+            />
             <orthographicCamera
               name={orthographicCameraName}
               left={0.5 * width / -2}
@@ -178,40 +189,51 @@ class WebGLCameraExample extends ExampleBase {
               bottom={height / -2}
               near={150}
               far={meshPosition.length()}
-              rotation={orthographicCameraRotation}/>
+              rotation={orthographicCameraRotation}
+            />
             <mesh
-              position={spherePosition}>
+              position={spherePosition}
+            >
               <sphereGeometry
                 radius={5}
                 widthSegments={16}
-                heightSegments={8}/>
+                heightSegments={8}
+              />
               <meshBasicMaterial
                 color={0x0000ff}
-                wireframe/>
+                wireframe
+              />
             </mesh>
           </object3D>
           <cameraHelper
-            cameraName={this.state.activeCameraName}/>
+            cameraName={this.state.activeCameraName}
+          />
           <object3D
-            position={meshPosition}>
+            position={meshPosition}
+          >
             <mesh>
               <sphereGeometry
                 radius={100}
                 widthSegments={16}
-                heightSegments={8}/>
+                heightSegments={8}
+              />
               <meshBasicMaterial
                 color={0xffffff}
-                wireframe/>
+                wireframe
+              />
             </mesh>
             <mesh
-              position={childPosition}>
+              position={childPosition}
+            >
               <sphereGeometry
                 radius={50}
                 widthSegments={16}
-                heightSegments={8}/>
+                heightSegments={8}
+              />
               <meshBasicMaterial
                 color={0x00ff00}
-                wireframe/>
+                wireframe
+              />
             </mesh>
           </object3D>
           {

@@ -67,7 +67,7 @@ class GeometryShapes extends ExampleBase {
 
     const {
       width,
-      } = this.props;
+    } = this.props;
 
     const windowHalfX = width / 2;
 
@@ -78,13 +78,13 @@ class GeometryShapes extends ExampleBase {
   _onDocumentMouseMove = (event) => {
     const {
       width,
-      } = this.props;
+    } = this.props;
 
     const windowHalfX = width / 2;
 
     this.mouseX = event.clientX - windowHalfX;
     this.targetRotation = this.targetRotationOnMouseDown +
-      ( this.mouseX - this.mouseXOnMouseDown ) * 0.02;
+      (this.mouseX - this.mouseXOnMouseDown) * 0.02;
   };
 
   _onDocumentMouseUp = () => {
@@ -105,7 +105,7 @@ class GeometryShapes extends ExampleBase {
 
       const {
         width,
-        } = this.props;
+      } = this.props;
 
       const windowHalfX = width / 2;
 
@@ -120,13 +120,13 @@ class GeometryShapes extends ExampleBase {
 
       const {
         width,
-        } = this.props;
+      } = this.props;
 
       const windowHalfX = width / 2;
 
       this.mouseX = event.touches[0].pageX - windowHalfX;
       this.targetRotation = this.targetRotationOnMouseDown +
-        ( this.mouseX - this.mouseXOnMouseDown ) * 0.05;
+        (this.mouseX - this.mouseXOnMouseDown) * 0.05;
     }
   };
 
@@ -140,7 +140,7 @@ class GeometryShapes extends ExampleBase {
     if (Math.abs(groupRotationY - this.targetRotation) > 0.0001) {
       this.setState({
         groupRotation: new THREE.Euler(0, groupRotationY +
-          ( this.targetRotation - groupRotationY ) * 0.05, 0),
+          (this.targetRotation - groupRotationY) * 0.05, 0),
       });
     }
 
@@ -151,20 +151,22 @@ class GeometryShapes extends ExampleBase {
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     const {
       groupRotation,
-      } = this.state;
+    } = this.state;
 
     return (<div ref="container">
-      <div style={{
-        color: 'black',
-        position: 'absolute',
-        top: '10px',
-        width: '100%',
-        textAlign: 'center',
-      }}>
+      <div
+        style={{
+          color: 'black',
+          position: 'absolute',
+          top: '10px',
+          width: '100%',
+          textAlign: 'center',
+        }}
+      >
         Simple procedurally generated 3D shapes<br/>
         Drag to spin
       </div>

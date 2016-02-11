@@ -1,5 +1,5 @@
 import React from 'react';
-const {PropTypes} = React;
+const { PropTypes } = React;
 
 import THREE from 'three';
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
@@ -51,14 +51,14 @@ class DraggableCube extends React.Component {
     hsl.s = Math.min(1, hsl.s * 1.1);
     hsl.l = Math.min(1, hsl.l * 1.1);
 
-    const {h, s, l} = hsl;
+    const { h, s, l } = hsl;
 
     this.hoverColor = new THREE.Color().setHSL(h, s, l);
     this.pressedColor = 0xff0000;
 
     const {
       initialPosition,
-      } = props;
+    } = props;
 
     this.state = {
       hovered: false,
@@ -75,10 +75,10 @@ class DraggableCube extends React.Component {
 
   _onMouseEnter = () => {
     this.setState({
-      'hovered': true,
+      hovered: true,
     });
 
-    const {onMouseEnter} = this.props;
+    const { onMouseEnter } = this.props;
 
     onMouseEnter();
   };
@@ -89,14 +89,15 @@ class DraggableCube extends React.Component {
 
     const {
       position,
-      } = this.state;
+    } = this.state;
 
     const {
       onDragStart,
       camera,
-      } = this.props;
+    } = this.props;
 
-    dragPlane.setFromNormalAndCoplanarPoint(backVector.clone().applyQuaternion(camera.quaternion), intersection.point);
+    dragPlane.setFromNormalAndCoplanarPoint(backVector.clone()
+      .applyQuaternion(camera.quaternion), intersection.point);
 
     this._offset = intersection.point.clone().sub(position);
 
@@ -104,7 +105,7 @@ class DraggableCube extends React.Component {
     document.addEventListener('mousemove', this._onDocumentMouseMove);
 
     this.setState({
-      'pressed': true,
+      pressed: true,
     });
 
     onDragStart();
@@ -115,11 +116,17 @@ class DraggableCube extends React.Component {
 
     const {
       mouseInput,
-      } = this.props;
+    } = this.props;
 
-    const ray:THREE.Ray = mouseInput.getCameraRay(new THREE.Vector2(event.clientX, event.clientY));
+    const ray:THREE.Ray = mouseInput.getCameraRay(new THREE
+      .Vector2(event.clientX, event.clientY));
 
-    const intersection = dragPlane.intersectLine(new THREE.Line3(ray.origin, ray.origin.clone().add(ray.direction.clone().multiplyScalar(10000))));
+    const intersection = dragPlane.intersectLine(new THREE.Line3(
+      ray.origin,
+      ray.origin.clone()
+        .add(ray.direction.clone().multiplyScalar(10000))
+    ));
+
     if (intersection) {
       this.setState({
         position: intersection.sub(this._offset),
@@ -135,7 +142,7 @@ class DraggableCube extends React.Component {
 
     const {
       onDragEnd,
-      } = this.props;
+    } = this.props;
 
     onDragEnd();
 
@@ -147,13 +154,13 @@ class DraggableCube extends React.Component {
   _onMouseLeave = () => {
     if (this.state.hovered) {
       this.setState({
-        'hovered': false,
+        hovered: false,
       });
     }
 
     const {
       onMouseLeave,
-      } = this.props;
+    } = this.props;
 
     onMouseLeave();
   };
@@ -161,7 +168,7 @@ class DraggableCube extends React.Component {
   _ref = (mesh) => {
     const {
       onCreate,
-      } = this.props;
+    } = this.props;
 
     onCreate(mesh);
   };
@@ -170,19 +177,19 @@ class DraggableCube extends React.Component {
     const {
       rotation,
       scale,
-      } = this;
+    } = this;
 
     const {
       cursor: {
         dragging,
-        },
-      } = this.props;
+      },
+    } = this.props;
 
     const {
       hovered,
       pressed,
       position,
-      } = this.state;
+    } = this.state;
 
     let color;
 

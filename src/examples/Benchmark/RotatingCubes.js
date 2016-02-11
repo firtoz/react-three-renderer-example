@@ -19,7 +19,8 @@ class RotatingCubes extends ExampleBase {
     const d = 20;
 
     this.lightPosition = new THREE.Vector3(d, d, d);
-    this.groundQuaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+    this.groundQuaternion = new THREE.Quaternion()
+      .setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
     this.cameraPosition = new THREE.Vector3(10, 2, 0);
     this.cameraQuaternion = new THREE.Quaternion()
       .setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
@@ -38,13 +39,11 @@ class RotatingCubes extends ExampleBase {
   }
 
   _getMeshStates() {
-    return this.bodies.map(({position, quaternion}) => {
-      return {
-        position: new THREE.Vector3().copy(position),
-        quaternion: new THREE.Quaternion().copy(quaternion),
-      };
-    });
-  };
+    return this.bodies.map(({ position, quaternion }) => ({
+      position: new THREE.Vector3().copy(position),
+      quaternion: new THREE.Quaternion().copy(quaternion),
+    }));
+  }
 
   _onAnimate = () => {
     this._updatePhysics();
@@ -71,18 +70,18 @@ class RotatingCubes extends ExampleBase {
 
       body.quaternion.multiply(body.rotationDeltaPerFrame);
 
-      const {movementPerFrame} = body;
+      const { movementPerFrame } = body;
 
       body.position.copy(body.startPosition.clone()
         .add(movementPerFrame.clone()
           .multiplyScalar(sinTime)));
     }
-  };
+  }
 
   componentDidMount() {
     const {
       container,
-      } = this.refs;
+    } = this.refs;
 
     this.stats = new Stats();
 
@@ -97,7 +96,7 @@ class RotatingCubes extends ExampleBase {
   }
 
   _createBodies() {
-    const {bodies} = this;
+    const { bodies } = this;
     const N = bodies.length;
 
     for (let i = 0; i < N; ++i) {
@@ -106,7 +105,10 @@ class RotatingCubes extends ExampleBase {
   }
 
   _createBody() {
-    const position = new THREE.Vector3(-2.5 + Math.random() * 5, 0.5 + Math.random() * 5, -2.5 + Math.random() * 5);
+    const position = new THREE.Vector3(
+      -2.5 + Math.random() * 5,
+      0.5 + Math.random() * 5,
+      -2.5 + Math.random() * 5);
 
     return {
       position,
@@ -114,7 +116,10 @@ class RotatingCubes extends ExampleBase {
       startPosition: position.clone(),
       movementPerFrame: new THREE.Vector3(Math.random(), Math.random(), Math.random()),
       rotationDeltaPerFrame: new THREE.Quaternion()
-        .setFromEuler(new THREE.Euler(Math.random() * 0.05, Math.random() * 0.05, Math.random() * 0.05)),
+        .setFromEuler(new THREE.Euler(
+          Math.random() * 0.05,
+          Math.random() * 0.05,
+          Math.random() * 0.05)),
       quaternion: new THREE.Quaternion(),
     };
   }
@@ -134,23 +139,25 @@ class RotatingCubes extends ExampleBase {
   };
 
   _getInputBox(title) {
-    const {numBodies} = this.state;
+    const { numBodies } = this.state;
 
-    return (<div style={{
-      position: 'absolute',
-      top: 0,
-      color: 'white',
-      width: '100%',
-      textAlign: 'center',
-      background: 'rgba(1,1,1,0.75)',
-    }}>
+    return (<div
+      style={{
+        position: 'absolute',
+        top: 0,
+        color: 'white',
+        width: '100%',
+        textAlign: 'center',
+        background: 'rgba(1,1,1,0.75)',
+      }}
+    >
       <div>{title}</div>
       <label>Bodies: <select
         value={numBodies}
-        onChange={this._onBodiesSelectChange}>
-        {[10, 50, 100, 200, 300, 500, 1000, 1500, 2000, 2500, 3000].map(val => {
-          return <option value={val} key={val}>{val}</option>;
-        })}
+        onChange={this._onBodiesSelectChange}
+      >
+        {[10, 50, 100, 200, 300, 500, 1000, 1500, 2000, 2500, 3000]
+          .map(val => <option value={val} key={val}>{val}</option>)}
       </select>
       </label>
     </div>);
@@ -160,16 +167,16 @@ class RotatingCubes extends ExampleBase {
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     const {
       meshStates,
-      } = this.state;
+    } = this.state;
 
     const d = 20;
 
-    const cubeMeshes = meshStates.map(({position, quaternion}, i) => {
-      return (<RotatingCube
+    const cubeMeshes = meshStates.map(({ position, quaternion }, i) =>
+      (<RotatingCube
         key={i}
 
         position={position}
@@ -178,8 +185,7 @@ class RotatingCubes extends ExampleBase {
         bodyIndex={i}
 
         meshes={this.meshes}
-      />);
-    });
+      />));
 
     return (<div
       ref="container"

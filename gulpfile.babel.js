@@ -15,17 +15,13 @@ const config = {
   noEval: false,
 };
 
-webpackConfig.output.devtoolModuleFilenameTemplate = (info) => {
-  return `wp:///${path.relative(__dirname, info.resourcePath)}`;
-};
+webpackConfig.output.devtoolModuleFilenameTemplate = (info) =>
+  `wp:///${path.relative(__dirname, info.resourcePath)}`;
 
-webpackConfig.output.devtoolFallbackModuleFilenameTemplate = (info) => {
-  return `wp:///${path.relative(__dirname, info.resourcePath)}?${info.hash}`;
-};
+webpackConfig.output.devtoolFallbackModuleFilenameTemplate = (info) =>
+  `wp:///${path.relative(__dirname, info.resourcePath)}?${info.hash}`;
 
-require('webpack/lib/ModuleFilenameHelpers').createFooter = () => {
-  return '';
-};
+require('webpack/lib/ModuleFilenameHelpers').createFooter = () => '';
 
 // pretend it's prod ( still has sourcemaps )
 // slowest compilation
@@ -159,14 +155,11 @@ gulp.task('build-dev', (callback) => {
   runSequence('build', callback);
 });
 
-gulp.task('clean-pages', () => {
-  return del('pages/**/!(.git|README.md)');
-});
+gulp.task('clean-pages', () => del('pages/**/!(.git|README.md)'));
 
-gulp.task('copy-assets', () => {
-  return gulp.src('assets/**/*')
-    .pipe(gulp.dest('pages/'));
-});
+gulp.task('copy-assets', () => gulp
+  .src('assets/**/*')
+  .pipe(gulp.dest('pages/')));
 
 // just run webpack with default config (prod)
 gulp.task('build', ['clean-pages'], (callback) => {

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import THREE from 'three';
 
 /**
@@ -12,7 +14,7 @@ class TrackballControls extends THREE.EventDispatcher {
     super();
 
     const _this = this;
-    const STATE = {NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4};
+    const STATE = { NONE: -1, ROTATE: 0, ZOOM: 1, PAN: 2, TOUCH_ROTATE: 3, TOUCH_ZOOM_PAN: 4 };
 
     this.object = object;
     this.domElement = ( domElement !== undefined ) ? domElement : document;
@@ -21,7 +23,7 @@ class TrackballControls extends THREE.EventDispatcher {
 
     this.enabled = true;
 
-    this.screen = {left: 0, top: 0, width: 0, height: 0};
+    this.screen = { left: 0, top: 0, width: 0, height: 0 };
 
     this.rotateSpeed = 1.0;
     this.zoomSpeed = 1.2;
@@ -77,9 +79,9 @@ class TrackballControls extends THREE.EventDispatcher {
 
     // events
 
-    const changeEvent = {type: 'change'};
-    const startEvent = {type: 'start'};
-    const endEvent = {type: 'end'};
+    const changeEvent = { type: 'change' };
+    const startEvent = { type: 'start' };
+    const endEvent = { type: 'end' };
 
     // methods
 
@@ -402,26 +404,26 @@ class TrackballControls extends THREE.EventDispatcher {
       if (_this.enabled === false) return;
 
       switch (event.touches.length) {
-      case 1:
-        _state = STATE.TOUCH_ROTATE;
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        _movePrev.copy(_moveCurr);
-        break;
+        case 1:
+          _state = STATE.TOUCH_ROTATE;
+          _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
+          _movePrev.copy(_moveCurr);
+          break;
 
-      case 2:
-        _state = STATE.TOUCH_ZOOM_PAN;
-        const dx = event.touches[0].pageX - event.touches[1].pageX;
-        const dy = event.touches[0].pageY - event.touches[1].pageY;
-        _touchZoomDistanceEnd = _touchZoomDistanceStart = Math.sqrt(dx * dx + dy * dy);
+        case 2:
+          _state = STATE.TOUCH_ZOOM_PAN;
+          const dx = event.touches[0].pageX - event.touches[1].pageX;
+          const dy = event.touches[0].pageY - event.touches[1].pageY;
+          _touchZoomDistanceEnd = _touchZoomDistanceStart = Math.sqrt(dx * dx + dy * dy);
 
-        const x = ( event.touches[0].pageX + event.touches[1].pageX ) / 2;
-        const y = ( event.touches[0].pageY + event.touches[1].pageY ) / 2;
-        _panStart.copy(getMouseOnScreen(x, y));
-        _panEnd.copy(_panStart);
-        break;
+          const x = ( event.touches[0].pageX + event.touches[1].pageX ) / 2;
+          const y = ( event.touches[0].pageY + event.touches[1].pageY ) / 2;
+          _panStart.copy(getMouseOnScreen(x, y));
+          _panEnd.copy(_panStart);
+          break;
 
-      default:
-        _state = STATE.NONE;
+        default:
+          _state = STATE.NONE;
 
       }
       _this.dispatchEvent(startEvent);
@@ -435,23 +437,23 @@ class TrackballControls extends THREE.EventDispatcher {
 
       switch (event.touches.length) {
 
-      case 1:
-        _movePrev.copy(_moveCurr);
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        break;
+        case 1:
+          _movePrev.copy(_moveCurr);
+          _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
+          break;
 
-      case 2:
-        const dx = event.touches[0].pageX - event.touches[1].pageX;
-        const dy = event.touches[0].pageY - event.touches[1].pageY;
-        _touchZoomDistanceEnd = Math.sqrt(dx * dx + dy * dy);
+        case 2:
+          const dx = event.touches[0].pageX - event.touches[1].pageX;
+          const dy = event.touches[0].pageY - event.touches[1].pageY;
+          _touchZoomDistanceEnd = Math.sqrt(dx * dx + dy * dy);
 
-        const x = ( event.touches[0].pageX + event.touches[1].pageX ) / 2;
-        const y = ( event.touches[0].pageY + event.touches[1].pageY ) / 2;
-        _panEnd.copy(getMouseOnScreen(x, y));
-        break;
+          const x = ( event.touches[0].pageX + event.touches[1].pageX ) / 2;
+          const y = ( event.touches[0].pageY + event.touches[1].pageY ) / 2;
+          _panEnd.copy(getMouseOnScreen(x, y));
+          break;
 
-      default:
-        _state = STATE.NONE;
+        default:
+          _state = STATE.NONE;
       }
     }
 
@@ -459,22 +461,22 @@ class TrackballControls extends THREE.EventDispatcher {
       if (_this.enabled === false) return;
 
       switch (event.touches.length) {
-      default:
-        // no touches
-        break;
-      case 1:
-        _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
-        _movePrev.copy(_moveCurr);
-        break;
+        default:
+          // no touches
+          break;
+        case 1:
+          _moveCurr.copy(getMouseOnCircle(event.touches[0].pageX, event.touches[0].pageY));
+          _movePrev.copy(_moveCurr);
+          break;
 
-      case 2:
-        _touchZoomDistanceStart = _touchZoomDistanceEnd = 0;
+        case 2:
+          _touchZoomDistanceStart = _touchZoomDistanceEnd = 0;
 
-        const x = ( event.touches[0].pageX + event.touches[1].pageX ) / 2;
-        const y = ( event.touches[0].pageY + event.touches[1].pageY ) / 2;
-        _panEnd.copy(getMouseOnScreen(x, y));
-        _panStart.copy(_panEnd);
-        break;
+          const x = ( event.touches[0].pageX + event.touches[1].pageX ) / 2;
+          const y = ( event.touches[0].pageY + event.touches[1].pageY ) / 2;
+          _panEnd.copy(getMouseOnScreen(x, y));
+          _panStart.copy(_panEnd);
+          break;
 
       }
 
@@ -523,3 +525,5 @@ class TrackballControls extends THREE.EventDispatcher {
 }
 
 export default TrackballControls;
+
+/* eslint-enable */

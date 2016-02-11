@@ -1,7 +1,7 @@
 import React from 'react';
 import THREE from 'three';
 
-const {PropTypes} = React;
+const { PropTypes } = React;
 
 const meshScale = new THREE.Vector3(1, 1, 1).multiplyScalar(0.5);
 
@@ -15,7 +15,7 @@ class RotatingCube extends React.Component {
     const {
       position,
       quaternion,
-      } = this.props;
+    } = this.props;
 
     return (<mesh
       position={position}

@@ -35,7 +35,8 @@ class Geometries extends ExampleBase {
     this.lathePoints = [];
 
     for (let i = 0; i < 50; i++) {
-      this.lathePoints.push(new THREE.Vector3(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, 0, ( i - 5 ) * 2));
+      this.lathePoints.push(new THREE
+        .Vector3(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, 0, (i - 5) * 2));
     }
 
     this.arrowDir = new THREE.Vector3(0, 1, 0);
@@ -80,11 +81,11 @@ class Geometries extends ExampleBase {
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     const {
       timer,
-      } = this.state;
+    } = this.state;
 
     const objectRotation = new THREE.Euler(
       timer * 5,

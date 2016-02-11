@@ -156,9 +156,9 @@ class Resources extends React.Component {
           width={rectWidth}
           length={rectLength}
         />
-        {(function roundedRect(rectX, rectY,
-                               roundedRectWidth, roundedRectHeight,
-                               radius) {
+        {((function roundedRect(rectX, rectY,
+                                roundedRectWidth, roundedRectHeight,
+                                radius) {
           return (<shape resourceId="roundedRect">
             <moveTo
               x={rectX}
@@ -205,7 +205,7 @@ class Resources extends React.Component {
               y={rectY + radius}
             />
           </shape>);
-        })(0, 0, 50, 50, 20)}
+        })(0, 0, 50, 50, 20))}
         <shape
           resourceId="track"
         >
@@ -238,7 +238,7 @@ class Resources extends React.Component {
             clockwise
           />
         </shape>
-        {(function circleShape() {
+        {((function circleShape() {
           const circleRadius = 40;
 
           return (<shape resourceId="circle">
@@ -271,7 +271,7 @@ class Resources extends React.Component {
               y={circleRadius}
             />
           </shape>);
-        })()}
+        })())}
         <shape resourceId="arc">
           <moveTo
             x={50}
@@ -411,7 +411,7 @@ class Resources extends React.Component {
             />
           </hole>
         </shape>
-        {(function splineShape() {
+        {((function splineShape() {
           const splinePoints = [];
           splinePoints.push(new THREE.Vector2(70, 20));
           splinePoints.push(new THREE.Vector2(80, 90));
@@ -427,7 +427,7 @@ class Resources extends React.Component {
               points={splinePoints}
             />
           </shape>);
-        })()}
+        })())}
       </resources>);
   }
 }

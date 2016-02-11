@@ -34,12 +34,14 @@ class Poles extends React.Component {
           resourceId="poleGeometry"
           width={5}
           height={375}
-          depth={5}/>
+          depth={5}
+        />
         <boxGeometry
           resourceId="boxGeometry"
           width={10}
           height={10}
-          depth={10}/>
+          depth={10}
+        />
         <meshPhongMaterial
           resourceId="poleMaterial"
           color={Number.parseInt(this.state.poleMaterialColor, 16)}
@@ -47,8 +49,8 @@ class Poles extends React.Component {
           shininess={this.state.poleMaterialShininess}
         />
       </resources>
-      {this.state.sidePolePositions.map((position, i) => {
-        return (<mesh
+      {this.state.sidePolePositions.map((position, i) =>
+        (<mesh
           key={i}
           position={position}
           receiveShadow
@@ -60,8 +62,7 @@ class Poles extends React.Component {
           <materialResource
             resourceId="poleMaterial"
           />
-        </mesh>);
-      })}
+        </mesh>))}
       <mesh
         position={this.state.topPolePosition}
         receiveShadow
@@ -85,11 +86,13 @@ class Poles extends React.Component {
             shininess={100}
           /> : null}
           {
-            <sphereGeometry resourceId="boxGeometry"
-                            radius={20}/> }
+            <sphereGeometry
+              resourceId="boxGeometry"
+              radius={20}
+            /> }
         </resources> : null }
-        {this.state.boxPositions.map((position, i) => {
-          return (<mesh
+        {this.state.boxPositions.map((position, i) =>
+          (<mesh
             key={i}
             position={position}
             receiveShadow
@@ -101,8 +104,7 @@ class Poles extends React.Component {
             <materialResource
               resourceId="poleMaterial"
             />
-          </mesh>);
-        })}
+          </mesh>))}
       </object3D>
     </object3D>);
   }

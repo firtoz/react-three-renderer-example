@@ -7,15 +7,13 @@ import RotatingCubes from './RotatingCubes';
 
 class RotatingCubesDirectUpdates extends RotatingCubes {
   _getMeshStates() {
-    const {bodies} = this;
+    const { bodies } = this;
 
-    return bodies.map(({position, quaternion, ref}) => {
-      return {
-        position: new THREE.Vector3().copy(position),
-        quaternion: new THREE.Quaternion().copy(quaternion),
-        ref,
-      };
-    });
+    return bodies.map(({ position, quaternion, ref }) => ({
+      position: new THREE.Vector3().copy(position),
+      quaternion: new THREE.Quaternion().copy(quaternion),
+      ref,
+    }));
   }
 
   _bodyRef(index, body) {
@@ -28,7 +26,7 @@ class RotatingCubesDirectUpdates extends RotatingCubes {
   }
 
   _updateGraphics() {
-    const {bodies} = this;
+    const { bodies } = this;
 
     for (let i = 0; i < bodies.length; ++i) {
       const body = bodies[i];
@@ -52,26 +50,24 @@ class RotatingCubesDirectUpdates extends RotatingCubes {
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     const {
       meshStates,
-      } = this.state;
+    } = this.state;
 
     const d = 20;
 
-    const cubeMeshes = meshStates.map(({position, quaternion, ref}, i) => {
-      return (<RotatingCube
-        key={i}
+    const cubeMeshes = meshStates.map(({ position, quaternion, ref }, i) => (<RotatingCube
+      key={i}
 
-        position={position}
-        quaternion={quaternion}
+      position={position}
+      quaternion={quaternion}
 
-        ref={ref}
+      ref={ref}
 
-        meshes={this.meshes}
-      />);
-    });
+      meshes={this.meshes}
+    />));
 
     return (<div
       ref="container"

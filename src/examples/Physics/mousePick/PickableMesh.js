@@ -1,7 +1,7 @@
 import React from 'react';
 import THREE from 'three';
 
-const {PropTypes} = React;
+const { PropTypes } = React;
 
 class PickableMesh extends React.Component {
   static propTypes = {
@@ -16,12 +16,12 @@ class PickableMesh extends React.Component {
   componentDidMount() {
     const {
       mesh,
-      } = this.refs;
+    } = this.refs;
 
     const {
       bodyIndex,
       meshes,
-      } = this.props;
+    } = this.props;
 
     mesh.userData._bodyIndex = bodyIndex;
 
@@ -31,11 +31,11 @@ class PickableMesh extends React.Component {
   componentWillUnmount() {
     const {
       mesh,
-      } = this.refs;
+    } = this.refs;
 
     const {
       meshes,
-      } = this.props;
+    } = this.props;
 
     meshes.splice(meshes.indexOf(mesh), 1);
   }
@@ -50,7 +50,7 @@ class PickableMesh extends React.Component {
     const {
       position,
       quaternion,
-      } = this.props;
+    } = this.props;
 
     return (<mesh
       position={position}

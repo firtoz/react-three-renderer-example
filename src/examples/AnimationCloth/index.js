@@ -25,7 +25,6 @@ const diff = new THREE.Vector3();
 
 import TrackballControls from '../../ref/trackball';
 
-
 function satisfyConstrains(p1, p2, distance) {
   diff.subVectors(p2.position, p1.position);
   const currentDist = diff.length();
@@ -91,7 +90,8 @@ class AnimationCloth extends ExampleBase {
   }
 
   componentDidMount() {
-    const controls = new TrackballControls(this.refs.mainCamera, ReactDOM.findDOMNode(this.refs.react3));
+    const controls = new TrackballControls(
+      this.refs.mainCamera, ReactDOM.findDOMNode(this.refs.react3));
     controls.rotateSpeed = 1.0;
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.8;
@@ -125,19 +125,19 @@ class AnimationCloth extends ExampleBase {
   }
 
   _toggleRotate = () => {
-    this.setState({rotate: !this.state.rotate});
+    this.setState({ rotate: !this.state.rotate });
   };
 
   _toggleWind = () => {
-    this.setState({wind: !this.state.wind});
+    this.setState({ wind: !this.state.wind });
   };
 
   _toggleSphere = () => {
-    this.setState({sphere: !this.state.sphere});
+    this.setState({ sphere: !this.state.sphere });
   };
 
   _togglePins = () => {
-    this.pins = this.pinsFormation[~~( Math.random() * this.pinsFormation.length )];
+    this.pins = this.pinsFormation[~~(Math.random() * this.pinsFormation.length)];
   };
 
   _simulate(time) {
@@ -242,7 +242,7 @@ class AnimationCloth extends ExampleBase {
 
     const {
       minTimePerFrame,
-      } = this.state;
+    } = this.state;
 
     let time;
 
@@ -257,7 +257,10 @@ class AnimationCloth extends ExampleBase {
     }
 
     const windStrength = Math.cos(time / 7000) * 20 + 40;
-    this.windForce.set(Math.sin(time / 2000), Math.cos(time / 3000), Math.sin(time / 1000)).normalize().multiplyScalar(windStrength);
+    this.windForce.set(
+      Math.sin(time / 2000),
+      Math.cos(time / 3000),
+      Math.sin(time / 1000)).normalize().multiplyScalar(windStrength);
 
     this._simulate(time);
 
@@ -282,12 +285,15 @@ class AnimationCloth extends ExampleBase {
     clothGeometry.verticesNeedUpdate = true;
 
     const newState = {
-      time: time,
+      time,
       spherePosition: this.ballPosition,
     };
 
     if (this.state.rotate) {
-      newState.cameraPosition = new THREE.Vector3(Math.cos(timer) * 1500, this.state.cameraPosition.y, Math.sin(timer) * 1500);
+      newState.cameraPosition = new THREE.Vector3(
+        Math.cos(timer) * 1500,
+        this.state.cameraPosition.y,
+        Math.sin(timer) * 1500);
     }
 
     this.setState(newState);
@@ -298,15 +304,21 @@ class AnimationCloth extends ExampleBase {
     this._clothGeometry = ref;
   };
 
+  _onFrameChange = (event) => {
+    this.setState({
+      minTimePerFrame: +event.target.value,
+    });
+  };
+
   render() {
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     const {
       minTimePerFrame,
-      } = this.state;
+    } = this.state;
 
     return (<div ref="container">
       <Info
@@ -317,12 +329,9 @@ class AnimationCloth extends ExampleBase {
         rotating={this.state.rotate}
         winding={this.state.wind}
         balling={this.state.sphere}
-        onFrameChange={(event) => {
-          this.setState({
-            minTimePerFrame: +event.target.value,
-          });
-        }}
-        minTimePerFrame={minTimePerFrame}/>
+        onFrameChange={this._onFrameChange}
+        minTimePerFrame={minTimePerFrame}
+      />
       <React3
         ref="react3"
         width={width}

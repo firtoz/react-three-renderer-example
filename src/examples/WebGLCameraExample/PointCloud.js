@@ -2,10 +2,6 @@ import React from 'react';
 import THREE from 'three';
 
 class PointCloud extends React.Component {
-  shouldComponentUpdate() {
-    return false;
-  }
-
   constructor(props, context) {
     super(props, context);
 
@@ -20,6 +16,10 @@ class PointCloud extends React.Component {
 
       this.pointCloudVertices.push(vertex);
     }
+  }
+
+  shouldComponentUpdate() {
+    return false;
   }
 
   render() {
