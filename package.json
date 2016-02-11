@@ -4,7 +4,7 @@
   "description": "An example showing how to use the react-three-renderer package",
   "main": "index.js",
   "scripts": {
-    "serve": "node ./node_modules/.bin/webpack-dev-server",
+    "serve": "gulp webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
