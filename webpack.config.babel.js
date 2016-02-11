@@ -20,7 +20,6 @@ const plugins = pluginsWithoutUglify.concat([
     },
     mangle: true,
   }),
-  new webpack.HotModuleReplacementPlugin(),
 ]);
 
 const babelLoaderConfigShared = {
