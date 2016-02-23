@@ -1,6 +1,7 @@
 import React from 'react';
 
 import SimpleExample from './Simple/index';
+import ManualRenderingExample from './ManualRendering/index';
 import ClothExample from './AnimationCloth/index';
 import GeometriesExample from './Geometries/index';
 import CameraExample from './WebGLCameraExample/index';
@@ -43,11 +44,6 @@ const examples = [
     url: 'DraggableCubes/index',
   },
   {
-    name: 'Advanced',
-    advanced: true,
-    page: 'advanced.html',
-  },
-  {
     name: 'Physics',
     component: Physics,
     url: 'Physics/index',
@@ -56,6 +52,24 @@ const examples = [
     name: 'Physics - MousePick',
     component: PhysicsMousePick,
     url: 'Physics/mousePick',
+  },
+  {
+    separator: true,
+    name: 'Advanced',
+  },
+  {
+    name: 'Without react-dom',
+    advanced: true,
+    page: 'advanced.html',
+  },
+  {
+    name: 'Manual rendering',
+    component: ManualRenderingExample,
+    url: 'ManualRendering/index',
+  },
+  {
+    separator: true,
+    name: 'Benchmarks',
   },
   {
     name: 'Benchmark - RotatingCubes - Through React',
@@ -135,9 +149,13 @@ class ExampleBrowser extends React.Component {
           <div>
             <h2>webgl</h2>
             {examples.map((example, index) => {
+              if (example.separator) {
+                return (<h2 key={index}>{example.name}</h2>);
+              }
+
               if (example.advanced) {
-                return (<div className="link" key={index}>
-                  <a href={example.page}>{example.name}</a>
+                return (<div key={index}>
+                  <a href={example.page} target="blank">{example.name}</a> (new tab)
                 </div>);
               }
 
