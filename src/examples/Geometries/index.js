@@ -36,7 +36,7 @@ class Geometries extends ExampleBase {
 
     for (let i = 0; i < 50; i++) {
       this.lathePoints.push(new THREE
-        .Vector3(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, 0, (i - 5) * 2));
+        .Vector2(Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50, (i - 5) * 2));
     }
 
     this.arrowDir = new THREE.Vector3(0, 1, 0);
