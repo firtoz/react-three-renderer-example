@@ -30,7 +30,7 @@ class Info extends React.Component {
         style={{
           color: 'lightgreen',
         }}
-      >O</b> orthographic
+      >O</b> orthographic &nbsp;
       <b
         style={{
           color: 'lightgreen',
