@@ -72,12 +72,12 @@ const examples = [
     name: 'Benchmarks',
   },
   {
-    name: 'Benchmark - RotatingCubes - Through React',
+    name: 'RotatingCubes - Through React',
     component: BenchmarkRotatingCubes,
     url: 'Benchmark/RotatingCubes',
   },
   {
-    name: 'Benchmark - RotatingCubes - Direct Updates',
+    name: 'RotatingCubes - Direct Updates',
     component: RotatingCubesDirectUpdates,
     url: 'Benchmark/RotatingCubesDirectUpdates',
   },
