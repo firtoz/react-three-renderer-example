@@ -13,3 +13,5 @@ npm i
 ``
 npm run serve
 ``
+
+Then visit [http://localhost:8080](http://localhost:8080) on your favorite webgl-enabled browser :)
