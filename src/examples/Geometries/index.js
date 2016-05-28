@@ -139,6 +139,7 @@ class Geometries extends ExampleBase {
           <directionalLight
             color={0xffffff}
             position={this.directionalLightPosition}
+            lookAt={this.scenePosition}
           />
           <mesh
             position={this.objectPositions[0]}

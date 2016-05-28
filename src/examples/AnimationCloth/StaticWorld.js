@@ -21,6 +21,7 @@ class StaticWorld extends React.Component {
     super(props, context);
 
     this.directionalLightPosition = new THREE.Vector3(50, 200, 100).multiplyScalar(1.3);
+    this.lightTarget = new THREE.Vector3(0, 0, 0);
     this.groundPosition = new THREE.Vector3(0, -250, 0);
     this.groundRotation = new THREE.Euler(-Math.PI / 2, 0, 0);
     this.groundRepeat = new THREE.Vector2(25, 25);
@@ -78,6 +79,7 @@ class StaticWorld extends React.Component {
         color={Number.parseInt(directionalLightColor, 16)}
         intensity={1.75}
         position={this.directionalLightPosition}
+        lookAt={this.lightTarget}
         castShadow
         shadowMapWidth={1024}
         shadowMapHeight={1024}

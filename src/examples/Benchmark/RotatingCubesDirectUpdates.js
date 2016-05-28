@@ -141,6 +141,7 @@ class RotatingCubesDirectUpdates extends RotatingCubes {
             shadowCameraNear={d}
 
             position={this.lightPosition}
+            lookAt={this.lightTarget}
           />
           <mesh
             castShadow

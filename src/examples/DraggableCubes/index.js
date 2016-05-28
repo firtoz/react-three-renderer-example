@@ -33,6 +33,7 @@ class DraggableCubes extends ExampleBase {
     };
 
     this.lightPosition = new THREE.Vector3(0, 500, 2000);
+    this.lightTarget = new THREE.Vector3(0, 0, 0);
   }
 
   shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
@@ -50,7 +51,7 @@ class DraggableCubes extends ExampleBase {
     const {
       container,
       camera,
-      } = this.refs;
+    } = this.refs;
 
     container.appendChild(this.stats.domElement);
 
@@ -101,12 +102,12 @@ class DraggableCubes extends ExampleBase {
   componentDidUpdate(newProps) {
     const {
       mouseInput,
-      } = this.refs;
+    } = this.refs;
 
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     if (width !== newProps.width || height !== newProps.height) {
       mouseInput.containerResized();
@@ -133,13 +134,13 @@ class DraggableCubes extends ExampleBase {
     const {
       mouseInput,
       camera,
-      } = this.refs;
+    } = this.refs;
 
     if (!mouseInput.isReady()) {
       const {
         scene,
         container,
-        } = this.refs;
+      } = this.refs;
 
       mouseInput.ready(scene, container, camera);
       mouseInput.restrictIntersections(this.cubes);
@@ -166,7 +167,7 @@ class DraggableCubes extends ExampleBase {
     const {
       width,
       height,
-      } = this.props;
+    } = this.props;
 
     const {
       cameraPosition,
@@ -177,7 +178,7 @@ class DraggableCubes extends ExampleBase {
 
       hovering,
       dragging,
-      } = this.state;
+    } = this.state;
 
     const style = {};
 
@@ -243,6 +244,7 @@ class DraggableCubes extends ExampleBase {
             color={0xffffff}
             intensity={1.5}
             position={this.lightPosition}
+            lookAt={this.lightTarget}
 
             castShadow
             shadowCameraNear={200}

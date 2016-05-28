@@ -27,6 +27,7 @@ class PhysicsMousePick extends ExampleBase {
     const d = 20;
 
     this.lightPosition = new THREE.Vector3(d, d, d);
+    this.lightTarget = new THREE.Vector3(0, 0, 0);
     this.groundQuaternion = new THREE.Quaternion()
       .setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
     this.cameraPosition = new THREE.Vector3(10, 2, 0);
@@ -372,6 +373,7 @@ class PhysicsMousePick extends ExampleBase {
             shadowCameraNear={d}
 
             position={this.lightPosition}
+            lookAt={this.lightTarget}
           />
           <mesh
             castShadow
