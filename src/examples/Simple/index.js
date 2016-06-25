@@ -2,6 +2,8 @@ import React from 'react';
 import React3 from 'react-three-renderer';
 import THREE from 'three';
 
+import Cube from './Cube';
+
 class Simple extends React.Component {
   static propTypes = {
     width: React.PropTypes.number.isRequired,
@@ -36,6 +38,12 @@ class Simple extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    if( window.debuggg ) {
+      console.log('index.js componentDidUpdate called');
+    }
+  }
+
   render() {
     const {
       width,
@@ -45,6 +53,10 @@ class Simple extends React.Component {
     // or you can use:
     // width = window.innerWidth
     // height = window.innerHeight
+    //
+    if( window.debuggg ) {
+      console.log('index.js wrapper render');
+    }
 
     return (<React3
       mainCamera="camera" // this points to the perspectiveCamera below
@@ -63,18 +75,9 @@ class Simple extends React.Component {
 
           position={this.cameraPosition}
         />
-        <mesh
+        <Cube
           rotation={this.state.cubeRotation}
-        >
-          <boxGeometry
-            width={1}
-            height={1}
-            depth={1}
-          />
-          <meshBasicMaterial
-            color={0x00ff00}
-          />
-        </mesh>
+        />
       </scene>
     </React3>);
   }
