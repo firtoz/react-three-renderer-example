@@ -18,9 +18,9 @@
   "license": "MIT",
   "dependencies": {
     "cannon": "^0.6.2",
-    "react": "^15.1.0",
+    "react": "~15.1.0",
     "react-dom": "^15.1.0",
-    "react-three-renderer": "2.1.0",
+    "react-three-renderer": "2.1.4",
     "stats.js": "^1.0.0",
     "three": "^0.77.1"
   },
