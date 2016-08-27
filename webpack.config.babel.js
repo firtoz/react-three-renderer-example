@@ -23,7 +23,7 @@ const plugins = pluginsWithoutUglify.concat([
 ]);
 
 const babelLoaderConfigShared = {
-  test: /\.js$/,
+  test: /\.jsx?$/,
   loader: 'babel-loader',
   query: {
     ...require('./package.json').babel,
