@@ -4,7 +4,7 @@
   "description": "An example showing how to use the react-three-renderer package",
   "main": "index.js",
   "scripts": {
-    "serve": "gulp webpack-dev-server",
+    "start": "gulp webpack-dev-server",
     "eslint-internal": "eslint ./src/",
     "eslint": "npm run eslint-internal -loglevel silent || true",
     "test": "echo \"Error: no test specified\" && exit 1"
