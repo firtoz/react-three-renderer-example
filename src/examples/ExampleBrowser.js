@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
+import ExampleViewer from './ExampleViewer';
 
 import SimpleExample from './Simple/index';
 import ManualRenderingExample from './ManualRendering/index';
@@ -17,41 +19,49 @@ const examples = [
     name: 'Simple',
     component: SimpleExample,
     url: 'Simple/index',
+    slug: 'webgl_simple',
   },
   {
     name: 'Cloth',
     component: ClothExample,
     url: 'AnimationCloth/index',
+    slug: 'webgl_cloth',
   },
   {
     name: 'Camera',
     component: CameraExample,
     url: 'WebGLCameraExample/index',
+    slug: 'webgl_camera',
   },
   {
     name: 'Geometries',
     component: GeometriesExample,
     url: 'Geometries/index',
+    slug: 'webgl_geometries',
   },
   {
     name: 'Geometry Shapes',
     component: GeometryShapesExample,
     url: 'GeometryShapes/index',
+    slug: 'webgl_geometry_shapes',
   },
   {
     name: 'Draggable Cubes',
     component: DraggableCubes,
     url: 'DraggableCubes/index',
+    slug: 'webgl_draggable_cubes',
   },
   {
     name: 'Physics',
     component: Physics,
     url: 'Physics/index',
+    slug: 'webgl_physics',
   },
   {
     name: 'Physics - MousePick',
     component: PhysicsMousePick,
     url: 'Physics/mousePick',
+    slug: 'webgl_physics_mousepick',
   },
   {
     separator: true,
@@ -66,6 +76,7 @@ const examples = [
     name: 'Manual rendering',
     component: ManualRenderingExample,
     url: 'ManualRendering/index',
+    slug: 'advanced_manual_rendering',
   },
   {
     separator: true,
@@ -75,74 +86,20 @@ const examples = [
     name: 'RotatingCubes - Through React',
     component: BenchmarkRotatingCubes,
     url: 'Benchmark/RotatingCubes',
+    slug: 'benchmarks_rotating_cubes_react',
   },
   {
     name: 'RotatingCubes - Direct Updates',
     component: RotatingCubesDirectUpdates,
     url: 'Benchmark/RotatingCubesDirectUpdates',
+    slug: 'benchmarks_rotating_cubes_direct',
   },
 ];
 
-class ExampleBrowser extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-
-    this.state = {
-      activeExample: null,
-      viewerWidth: 0,
-      viewerHeight: 0,
-    };
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', this._onWindowResize, false);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this._onWindowResize, false);
-  }
-
-  _onWindowResize = () => {
-    const viewer = this.refs.viewer;
-
-    this.setState({
-      viewerWidth: viewer.offsetWidth,
-      viewerHeight: viewer.offsetHeight,
-    });
-  };
-
-  render() {
-    let exampleContent = null;
-
-    const {
-      viewerWidth,
-      viewerHeight,
-    } = this.state;
-
-    let sourceButton = null;
-
-    if (this.state.activeExample !== null) {
-      const {
-        component: ExampleComponent,
-        url,
-      } = examples[this.state.activeExample];
-
-      exampleContent = (<ExampleComponent
-        width={viewerWidth}
-        height={viewerHeight}
-      />);
-
-      sourceButton = (<div key="src" id="button">
-        <a
-          href={`https://github.com/toxicFork/react-three-renderer-example/blob/master/src/examples/${url}.js`}
-          target="_blank"
-        >
-          View source
-        </a>
-      </div>);
-    }
-
-    return (<div>
+const ExampleBrowser = ({ params }) => {
+  const activeExample = params.slug && examples.find(example => example.slug === params.slug);
+  return (
+    <div>
       <div id="panel" className="collapsed">
         <h1><a href="https://github.com/toxicFork/react-three-renderer/">react-three-renderer</a> / examples</h1>
         <div id="content">
@@ -159,33 +116,25 @@ class ExampleBrowser extends React.Component {
                 </div>);
               }
 
-              const onLinkClick = () => {
-                const viewer = this.refs.viewer;
-
-                this.setState({
-                  viewerWidth: viewer.offsetWidth,
-                  viewerHeight: viewer.offsetHeight,
-                  activeExample: index,
-                });
-              };
-
-              return (<div
-                className="link"
+              return (<Link
+                to={`/${example.slug}`}
                 key={index}
-                onClick={onLinkClick}
+                className="link"
+                activeClassName="selected"
               >
                 {example.name}
-              </div>);
+              </Link>);
             })}
           </div>
         </div>
       </div>
-      <div id="viewer" ref="viewer">
-        {exampleContent}
-        {sourceButton}
-      </div>
-    </div>);
-  }
-}
+      <ExampleViewer example={activeExample} />
+    </div>
+  );
+};
+
+ExampleBrowser.propTypes = {
+  params: React.PropTypes.object.isRequired,
+};
 
 export default ExampleBrowser;
