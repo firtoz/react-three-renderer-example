@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import ExampleViewer from './ExampleViewer';
 
 import SimpleExample from './Simple/index';
+import PositionTransitionExample from './PositionTransition/index';
 import ManualRenderingExample from './ManualRendering/index';
 import ClothExample from './AnimationCloth/index';
 import GeometriesExample from './Geometries/index';
@@ -20,6 +21,12 @@ const examples = [
     component: SimpleExample,
     url: 'Simple/index',
     slug: 'webgl_simple',
+  },
+  {
+    name: 'Transitions',
+    component: PositionTransitionExample,
+    url: 'PositionTransition/index',
+    slug: 'webgl_transitions',
   },
   {
     name: 'Cloth',
