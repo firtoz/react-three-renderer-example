@@ -1,5 +1,5 @@
 import React from 'react';
-import THREE from 'three';
+import * as THREE from 'three';
 import ClothGeometry from './ClothGeometry';
 import Poles from './Poles';
 import Cloth from './Cloth';

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import THREE from 'three';
+import * as THREE from 'three';
 import Stats from 'stats.js';
 
 import React3 from 'react-three-renderer';

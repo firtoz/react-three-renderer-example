@@ -58,10 +58,10 @@ gulp.task('webpack-dev-server', (callback) => {
     'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
   ].concat(webpackConfig.entry.advanced);
 
-  webpackConfig.module.loaders.unshift({
-    test: /\.js$/,
-    loaders: ['react-hot'],
-    include: path.join(__dirname, 'src'),
+  webpackConfig.module.loaders.forEach(loader => {
+    if (loader.loader === 'babel-loader') {
+      loader.query.plugins.push('react-hot-loader/babel');
+    }
   });
 
   if (config.prod) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import THREE from 'three';
+import * as THREE from 'three';
 
 class PointCloud extends React.Component {
   constructor(props, context) {
