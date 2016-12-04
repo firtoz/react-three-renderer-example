@@ -1,8 +1,8 @@
 import React3 from 'react-three-renderer';
-import THREE from 'three';
-import ReactUpdates from 'react/lib/ReactUpdates';
+import * as THREE from 'three';
+import ReactUpdates from 'react-dom/lib/ReactUpdates';
 
-import SyntheticMouseEvent from 'react/lib/SyntheticMouseEvent';
+import SyntheticMouseEvent from 'react-dom/lib/SyntheticMouseEvent';
 
 import Module from 'react-three-renderer/lib/Module';
 

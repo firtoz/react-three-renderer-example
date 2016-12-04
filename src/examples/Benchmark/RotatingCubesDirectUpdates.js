@@ -1,6 +1,6 @@
 import React from 'react';
 import React3 from 'react-three-renderer';
-import THREE from 'three';
+import * as THREE from 'three';
 
 import RotatingCube from './RotatingCube';
 import RotatingCubes from './RotatingCubes';

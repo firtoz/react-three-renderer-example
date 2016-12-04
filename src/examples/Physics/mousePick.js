@@ -1,6 +1,6 @@
 import React from 'react';
 import React3 from 'react-three-renderer';
-import THREE from 'three';
+import * as THREE from 'three';
 import CANNON from 'cannon/src/Cannon';
 
 import MouseInput from '../inputs/MouseInput';

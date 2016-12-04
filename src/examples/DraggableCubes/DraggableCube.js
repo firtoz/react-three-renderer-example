@@ -1,7 +1,7 @@
 import React from 'react';
 const { PropTypes } = React;
 
-import THREE from 'three';
+import * as THREE from 'three';
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 
 import MouseInput from '../inputs/MouseInput';

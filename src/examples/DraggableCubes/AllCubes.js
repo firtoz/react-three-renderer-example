@@ -1,6 +1,6 @@
 import React from 'react';
 import DraggableCube from './DraggableCube';
-import THREE from 'three';
+import * as THREE from 'three';
 
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
 

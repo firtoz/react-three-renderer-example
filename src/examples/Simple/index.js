@@ -1,6 +1,6 @@
 import React from 'react';
 import React3 from 'react-three-renderer';
-import THREE from 'three';
+import * as THREE from 'three';
 
 class Simple extends React.Component {
   static propTypes = {
