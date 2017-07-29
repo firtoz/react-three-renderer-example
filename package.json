@@ -18,13 +18,13 @@
   "license": "MIT",
   "dependencies": {
     "cannon": "^0.6.2",
-    "react": "~15.4.1",
-    "react-dom": "^15.4.1",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
     "react-router": "^3.0.0",
     "react-sizeme": "^2.2.0",
-    "react-three-renderer": "3.0.0",
+    "react-three-renderer": "^3.0.0",
     "stats.js": "^1.0.0",
-    "three": "0.82.1"
+    "three": "^0.84.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
