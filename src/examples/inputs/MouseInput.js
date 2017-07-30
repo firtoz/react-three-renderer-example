@@ -362,9 +362,14 @@ class MouseInput extends Module {
 
   _getRelativeMouseCoords(screenMouseCoords) {
     const containerRect = this._containerRect;
+    
+    // we need a scroll offset, too
+    var doc = document.documentElement;
+    var scrollTop = (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+    var scrollLeft = (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
 
     const relativeMouseCoords = screenMouseCoords.clone()
-      .sub(tempVector2.set(containerRect.left, containerRect.top))
+      .sub(tempVector2.set(containerRect.left - scrollLeft, containerRect.top - scrollTop))
       .divide(tempVector2.set(containerRect.width, containerRect.height));
 
     // mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
