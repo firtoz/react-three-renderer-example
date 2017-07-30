@@ -1,11 +1,16 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 import gulp from 'gulp';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import gutil from 'gulp-util';
-import webpackConfig from './webpack.config.babel';
 import path from 'path';
 import runSequence from 'run-sequence';
 import del from 'del';
+
+import webpackConfig from './webpack.config.babel';
+import pluginsWithoutUglify from './config/webpackPluginsWithoutUglify';
+import webpackCommonsChunkPluginConfig from './config/webpackCommonsChunkPluginConfig';
 
 const cache = {};
 
@@ -15,10 +20,10 @@ const config = {
   noEval: false,
 };
 
-webpackConfig.output.devtoolModuleFilenameTemplate = (info) =>
+webpackConfig.output.devtoolModuleFilenameTemplate = info =>
   `wp:///${path.relative(__dirname, info.resourcePath)}`;
 
-webpackConfig.output.devtoolFallbackModuleFilenameTemplate = (info) =>
+webpackConfig.output.devtoolFallbackModuleFilenameTemplate = info =>
   `wp:///${path.relative(__dirname, info.resourcePath)}?${info.hash}`;
 
 require('webpack/lib/ModuleFilenameHelpers').createFooter = () => '';
@@ -40,9 +45,7 @@ gulp.task('webpack-dev-server-no-eval', () => {
 });
 
 // fast compilation, low runtime performance
-gulp.task('webpack-dev-server', (callback) => {
-  void callback;
-
+gulp.task('webpack-dev-server', () => {
   const host = '0.0.0.0';
   const port = 8080;
 
@@ -58,7 +61,7 @@ gulp.task('webpack-dev-server', (callback) => {
     'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors
   ].concat(webpackConfig.entry.advanced);
 
-  webpackConfig.module.loaders.forEach(loader => {
+  webpackConfig.module.loaders.forEach((loader) => {
     if (loader.loader === 'babel-loader') {
       loader.query.plugins.push('react-hot-loader/babel');
     }
@@ -66,18 +69,15 @@ gulp.task('webpack-dev-server', (callback) => {
 
   if (config.prod) {
     webpackConfig.devtool = 'source-map';
+  } else if (config.noEval) {
+    webpackConfig.devtool = 'cheap-module-source-map';
   } else {
-    if (config.noEval) {
-      webpackConfig.devtool = 'cheap-module-source-map';
-    } else {
-      webpackConfig.devtool = 'eval-cheap-module-source-map';
-    }
+    webpackConfig.devtool = 'eval-cheap-module-source-map';
   }
 
   webpackConfig.plugins = [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.CommonsChunkPlugin(
-      path.join('js', 'bundle-commons.js'), ['app', 'advanced']),
+    webpackCommonsChunkPluginConfig,
   ];
 
   if (config.prod) {
@@ -129,7 +129,7 @@ gulp.task('build-prod-with-addon', (callback) => {
 gulp.task('build-prod-with-addon-no-mangle', (callback) => {
   webpackConfig.devtool = 'source-map';
 
-  webpackConfig.plugins = webpackConfig.pluginsWithoutUglify.concat([
+  webpackConfig.plugins = pluginsWithoutUglify.concat([
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,

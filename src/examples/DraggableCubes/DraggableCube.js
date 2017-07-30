@@ -1,5 +1,5 @@
 import React from 'react';
-const { PropTypes } = React;
+import PropTypes from 'prop-types';
 
 import * as THREE from 'three';
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';

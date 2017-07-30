@@ -5,7 +5,13 @@
   "parser": "babel-eslint",
   "rules": {
     "id-length": 0,
+    "no-bitwise": "off",
     "no-underscore-dangle": 0,
+    "linebreak-style": "off",
+    "no-mixed-operators": "off",
+    "no-plusplus": [
+      0
+    ],
     "no-param-reassign": [
       2,
       {

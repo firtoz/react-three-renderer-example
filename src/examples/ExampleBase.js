@@ -1,6 +1,6 @@
 import React from 'react';
 
-const { PropTypes } = React;
+import PropTypes from 'prop-types';
 
 class ExampleBase extends React.Component {
   static propTypes = {

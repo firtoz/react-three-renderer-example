@@ -1,10 +1,9 @@
 import React from 'react';
-
-const { PropTypes } = React;
-
-import Cloth from './Cloth';
+import PropTypes from 'prop-types';
 
 import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
+
+import Cloth from './Cloth';
 
 class ClothGeometry extends React.Component {
   static propTypes = {
@@ -12,10 +11,14 @@ class ClothGeometry extends React.Component {
   };
 
   componentDidMount() {
-    const geometry = this.refs.geometry;
+    const geometry = this.geometry;
 
     geometry.computeFaceNormals();
   }
+
+  _geometryRef = (geometry) => {
+    this.geometry = geometry;
+  };
 
   shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate;
 
@@ -25,7 +28,7 @@ class ClothGeometry extends React.Component {
     } = this.props;
 
     return (<parametricGeometry
-      ref={'geometry'}
+      ref={this._geometryRef}
       parametricFunction={Cloth.clothFunction}
       slices={cloth.w}
       stacks={cloth.h}

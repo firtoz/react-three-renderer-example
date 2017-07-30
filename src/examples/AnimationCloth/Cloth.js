@@ -34,8 +34,6 @@ const clothFunction = plane(restDistance * xSegs, restDistance * ySegs);
 
 class Particle {
   constructor(x, y, z, mass) {
-    void z;
-
     this.position = clothFunction(x, y); // position
     this.previous = clothFunction(x, y); // previous
     this.original = clothFunction(x, y);
@@ -49,7 +47,7 @@ class Particle {
   // Force -> Acceleration
   addForce(force) {
     this.a.add(
-      this.tmp2.copy(force).multiplyScalar(this.invMass)
+      this.tmp2.copy(force).multiplyScalar(this.invMass),
     );
   }
 
@@ -82,10 +80,10 @@ class Cloth {
     let v;
 
     // Create particles
-    for (v = 0; v <= h; v++) {
-      for (u = 0; u <= w; u++) {
+    for (v = 0; v <= h; ++v) {
+      for (u = 0; u <= w; ++u) {
         particles.push(
-          new Particle(u / w, v / h, 0, MASS)
+          new Particle(u / w, v / h, 0, MASS),
         );
       }
     }

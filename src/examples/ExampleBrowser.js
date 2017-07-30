@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router-dom';
 import ExampleViewer from './ExampleViewer';
 
 import SimpleExample from './Simple/index';
@@ -96,7 +96,8 @@ const examples = [
   },
 ];
 
-const ExampleBrowser = ({ params }) => {
+const ExampleBrowser = ({ match }) => {
+  const { params } = match;
   const activeExample = params.slug && examples.find(example => example.slug === params.slug);
   return (
     <div>
@@ -116,14 +117,14 @@ const ExampleBrowser = ({ params }) => {
                 </div>);
               }
 
-              return (<Link
+              return (<NavLink
                 to={`/${example.slug}`}
                 key={index}
                 className="link"
                 activeClassName="selected"
               >
                 {example.name}
-              </Link>);
+              </NavLink>);
             })}
           </div>
         </div>
@@ -134,7 +135,7 @@ const ExampleBrowser = ({ params }) => {
 };
 
 ExampleBrowser.propTypes = {
-  params: React.PropTypes.object.isRequired,
+  match: React.PropTypes.object.isRequired,
 };
 
 export default ExampleBrowser;

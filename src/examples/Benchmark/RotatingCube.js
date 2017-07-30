@@ -1,7 +1,7 @@
 import React from 'react';
 import * as THREE from 'three';
 
-const { PropTypes } = React;
+import PropTypes from 'prop-types';
 
 const meshScale = new THREE.Vector3(1, 1, 1).multiplyScalar(0.5);
 

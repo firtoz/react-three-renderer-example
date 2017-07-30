@@ -1,17 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 import path from 'path';
 import webpack from 'webpack';
+import pluginsWithoutUglify from './config/webpackPluginsWithoutUglify';
+
+import packageJson from './package.json';
 
 const outPath = path.join(__dirname, 'pages');
-
-const pluginsWithoutUglify = [
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: '"production"',
-    },
-  }),
-  new webpack.optimize.CommonsChunkPlugin(
-    path.join('js', 'bundle-commons.js'), ['app', 'advanced']),
-];
 
 const plugins = pluginsWithoutUglify.concat([
   new webpack.optimize.UglifyJsPlugin({
@@ -26,7 +21,7 @@ const babelLoaderConfigShared = {
   test: /\.jsx?$/,
   loader: 'babel-loader',
   query: {
-    ...require('./package.json').babel,
+    ...packageJson.babel,
     cacheDirectory: true,
   },
 };
@@ -34,7 +29,7 @@ const babelLoaderConfigShared = {
 export default {
   entry: {
     app: [
-      './src/index.js',
+      './src/index.jsx',
     ],
     advanced: [
       './src/examples/AdvancedExample/index.js',
@@ -55,13 +50,13 @@ export default {
         ...babelLoaderConfigShared,
       },
       {
-        include: /react-three-renderer[\\\/]src/,
+        include: /react-three-renderer[\\/]src/,
         ...babelLoaderConfigShared,
       },
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['.js', '.jsx'],
     alias: {
       // use the source files
       'react-three-renderer': path.join(
@@ -75,6 +70,5 @@ export default {
     inline: true,
     stats: { colors: true },
   },
-  pluginsWithoutUglify,
   plugins,
 };

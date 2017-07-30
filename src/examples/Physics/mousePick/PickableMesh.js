@@ -1,7 +1,7 @@
 import React from 'react';
 import * as THREE from 'three';
 
-const { PropTypes } = React;
+import PropTypes from 'prop-types';
 
 class PickableMesh extends React.Component {
   static propTypes = {

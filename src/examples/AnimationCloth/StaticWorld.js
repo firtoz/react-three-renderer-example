@@ -1,15 +1,16 @@
 import React from 'react';
 import * as THREE from 'three';
+import PropTypes from 'prop-types';
+
+import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
+
+import fragmentShaderDepth from 'raw-loader!./shaders/depth.frag';
+import vertexShaderDepth from 'raw-loader!./shaders/depth.vert';
+
 import ClothGeometry from './ClothGeometry';
 import Poles from './Poles';
 import Cloth from './Cloth';
 
-import PureRenderMixin from 'react/lib/ReactComponentWithPureRenderMixin';
-
-const { PropTypes } = React;
-
-import fragmentShaderDepth from 'raw!./shaders/depth.frag';
-import vertexShaderDepth from 'raw!./shaders/depth.vert';
 
 class StaticWorld extends React.Component {
   static propTypes = {
@@ -36,15 +37,15 @@ class StaticWorld extends React.Component {
     // check if HMR is enabled
     if (module.hot) {
       // accept update of dependency
-      module.hot.accept('raw!./shaders/depth.frag', () => {
+      module.hot.accept('raw-loader!./shaders/depth.frag', () => {
         this.setState({
-          fragmentShaderDepth: require('raw!./shaders/depth.frag'),
+          fragmentShaderDepth: require('raw-loader!./shaders/depth.frag'),
         });
       });
 
-      module.hot.accept('raw!./shaders/depth.vert', () => {
+      module.hot.accept('raw-loader!./shaders/depth.vert', () => {
         this.setState({
-          vertexShaderDepth: require('raw!./shaders/depth.vert'),
+          vertexShaderDepth: require('raw-loader!./shaders/depth.vert'),
         });
       });
     }
